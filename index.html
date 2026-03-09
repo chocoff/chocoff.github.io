@@ -1,95 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fernando Rojas</title>
-    <link rel="stylesheet" href="style.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Fernando Rojas</title>
+		<link rel="stylesheet" href="style.css">
+		<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	</head>
 
-<body>
-    <header class="header">
-        <a href="index.html" class="logo">Choco.</a>
+	<body>
+		<header class="header">
+			<a href="index.html" class="logo">Choco.</a>
 
-        <nav class="navbar">
-            <a href="#" class="active">Home</a>
-            <a href="about.html">About me</a>
-            <a href="./reforest-ai/index.html">Portfolio</a>
-            <a href="mailto:rojasmfer@proton.me">Contact</a>
-        </nav>
-    </header>
-    
-    <section class="home">
-        <div class="home-content">
-            <h1>Hi, I'm Choco. This web is a prototype for my portfolio</h1>
-            <h3>Software Dev</h3>
-            <p>Born in Paraguay and currently studying CS at NTUST (Taiwan) <br>
-                C++ and Python softwares are my main specialties, all my projects aim to 
-                be as easy to use as possible and videogame development <br>
-                is my number one hobby in the world of coding.</p>
-            <div class="btn-box">
-                <a href="https://www.linkedin.com/in/fernando-rojas-68092824b/">Hire me</a>
-                <a href="mailto:rojasmfer@proton.me">Let's Talk</a>
-            </div>
-        </div>
+			<nav class="navbar">
+				<a href="#" class="active">Home</a>
+				<a href="about.html">About me</a>
+				<a href="./reforest-ai/index.html">Portfolio</a>
+				<a href="mailto:rojasmfer@proton.me">Contact</a>
+			</nav>
+		</header>
 
-        <div class="home-sci">
-            <a href="https://www.linkedin.com/in/fernando-rojas-68092824b/" target="_blank" rel="noopener noreferrer"><i class='bx bxl-linkedin' ></i></a>
-            <a href="https://www.instagram.com/choco4._" target="_blank" rel="noopener noreferrer"><i class='bx bxl-instagram' ></i></a>
-            <a href="https://www.github.com/chocoff" target="_blank" rel="noopener noreferrer"><i class='bx bxl-github' ></i></a>
-            <a href="#" id="gmail-link" data-email="rojasmfer@proton.me"><i class='bx bxl-gmail' ></i></a>
-            <a href="https://wa.me/595981133155" target="_blank" rel="noopener noreferrer"><i class='bx bxl-whatsapp' ></i></a>
-        </div>
+		<section class="home">
+			<div class="home-content">
+				<h1>Hi, I'm Choco. <br>The site is under maintenance</h1>
+				<h3>Software Dev</h3>
+				<p>Born in Paraguay and currently studying CS at NTUST (Taiwan) <br>
+					C++ and Python softwares are my main specialties, all my projects aim to
+					be as easy to use as possible and videogame development <br>
+					is my number one hobby in the world of coding.</p>
+				<div class="btn-box">
+					<a href="https://www.linkedin.com/in/fernando-rojaschoco">Hire me</a>
+					<a href="mailto:rojasmfer@proton.me">Let's Talk</a>
+				</div>
+			</div>
 
-        <span class="home-imgHover"></span>
-    </section>
+			<div class="home-sci">
+				<a href="https://www.linkedin.com/in/fernando-rojaschoco" target="_blank" rel="noopener noreferrer"><i class='bx bxl-linkedin'></i></a>
+				<a href="https://www.instagram.com/choco4._" target="_blank" rel="noopener noreferrer"><i class='bx bxl-instagram'></i></a>
+				<a href="https://www.github.com/chocoff" target="_blank" rel="noopener noreferrer"><i class='bx bxl-github'></i></a>
+				<a href="#" id="gmail-link" data-email="rojasmfer@proton.me"><i class='bx bxl-gmail'></i></a>
+				<a href="https://wa.me/595981133155" target="_blank" rel="noopener noreferrer"><i class='bx bxl-whatsapp'></i></a>
+			</div>
+			<img class="bonfire_png" src="bonfire.png" alt="Bonfire" title="NicePNG">
+		</section>
 
-   <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const gmailLink = document.getElementById('gmail-link');
-            const emailToCopy = gmailLink.getAttribute('data-email');
-
-            gmailLink.addEventListener('click', function(event) {
-                event.preventDefault();
-
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(emailToCopy)
-                        .then(() => {
-                            alert('Email address copied to clipboard: ' + emailToCopy);
-                        })
-                        .catch(err => {
-                            console.error('Failed to copy email: ', err);
-                            alert('Failed to copy email, please copy it manually: ' + emailToCopy);
-                        });
-                } else {
-                    const textArea = document.createElement('textarea');
-                    textArea.value = emailToCopy;
-
-                    textArea.style.position = 'fixed';
-                    textArea.style.left = '-9999px';
-                    textArea.style.top = '-9999px';
-
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-
-                    try {
-                        document.execCommand('copy');
-                        alert('Email address copied to clipboard: ' + emailToCopy);
-                    } catch (err) {
-                        console.error('Fallback: Failed to copy email: ', err);
-                        alert('Failed to copy email. Please copy it manually: ' + emailToCopy);
-                    } finally {
-                        document.body.removeChild(textArea);
-                    }
-                }
-            });
-        });
-    </script>
-
-</body>
-
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				const gmailLink = document.getElementById('gmail-link');
+				const emailToCopy = gmailLink.getAttribute('data-email');
+				
+				gmailLink.addEventListener('click', function(event) {
+					event.preventDefault();
+					
+					if (navigator.clipboard && navigator.clipboard.writeText) {
+						navigator.clipboard.writeText(emailToCopy)
+						.then(() => {
+							alert('Email address copied to clipboard: ' + emailToCopy);
+							})
+							.catch(err => {
+								console.error('Failed to copy email: ', err);
+								alert('Failed to copy email, please copy it manually: ' + emailToCopy);
+								});
+								} else {
+									const textArea = document.createElement('textarea');
+									textArea.value = emailToCopy;
+									
+									textArea.style.position = 'fixed';
+									textArea.style.left = '-9999px';
+									textArea.style.top = '-9999px';
+									
+									document.body.appendChild(textArea);
+									textArea.focus();
+									textArea.select();
+									
+									try {
+										document.execCommand('copy');
+										alert('Email address copied to clipboard: ' + emailToCopy);
+										} catch (err) {
+											console.error('Fallback: Failed to copy email: ', err);
+											alert('Failed to copy email. Please copy it manually: ' + emailToCopy);
+											} finally {
+												document.body.removeChild(textArea);
+											}
+										}
+										});
+										});
+		</script>
+	</body>
 </html>
