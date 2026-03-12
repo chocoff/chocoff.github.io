@@ -144,6 +144,25 @@ section {
   animation: flicker 3s infinite alternate;
 }
 
+.me_pic {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background-image: url("../media/focus.jpeg");
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.3s ease-in-out;
+  border: 3px solid var(--embers);
+  filter: drop-shadow(0 0 5px var(--embers));
+  transition: 0.5s;
+}
+
+.me_pic:hover {
+  width: 600px;
+  height: 600px;
+  filter: drop-shadow(0 0 20px var(--embers));
+}
+
 @keyframes flicker {
   0% {
     transform: scale(1);
@@ -353,27 +372,21 @@ section {
 /* PROJECTS HORIZONTAL SCROLLER */
 .projects-wrapper {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: hidden;
   padding: 20px 0;
   position: relative;
-  cursor: grab;
-  /*hiding scrollbar*/
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scroll-behavior: smooth;
 }
 
 .projects-wrapper::-webkit-scrollbar {
   display: none;
 }
 
-.projects-wrapper:active {
-  cursor: grabbing;
-}
-
 .projects-track {
   display: flex;
   width: max-content;
   gap: 2.5rem;
+  transition: none;
 }
 
 .projects-track:hover {

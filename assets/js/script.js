@@ -19,73 +19,61 @@ document.querySelectorAll('.navbar a').forEach(anchor => {
     });
 });
 
-// --- PROJECTS INFINITE SCROLL & DRAG LOGIC ---
+// --- PROJECTS INFINITE SCROLL & WHEEL LOGIC ---
 const wrapper = document.querySelector('.projects-wrapper');
 const track = document.querySelector('.projects-track');
 
 if (wrapper && track) {
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-    let scrollSpeed = 1; // Speed of auto-scroll
+    let scrollSpeed = 1; 
+    let isHovered = false;
     let animationId;
 
-    // dup cards for loop effect
     const cards = Array.from(track.children);
     cards.forEach(card => {
         const clone = card.cloneNode(true);
         track.appendChild(clone);
     });
 
-    // auto-scroll function
-    const startAutoScroll = () => {
-        wrapper.scrollLeft += scrollSpeed;
-        
-        // reset to start when halfway point is reached
-        if (wrapper.scrollLeft >= track.offsetWidth / 2) {
-            wrapper.scrollLeft = 0;
+    const scrollWidth = track.scrollWidth / 2;
+
+    const animate = () => {
+        if (!isHovered) {
+            wrapper.scrollLeft += scrollSpeed;
+            if (wrapper.scrollLeft >= scrollWidth) {
+                wrapper.scrollLeft -= scrollWidth;
+            }
         }
-        animationId = requestAnimationFrame(startAutoScroll);
+        animationId = requestAnimationFrame(animate);
     };
 
-    // start auto-scroll initially
-    startAutoScroll();
+    animate();
 
-    // Mouse Events (Desktop Drag)
-    wrapper.addEventListener('mousedown', (e) => {
-        isDown = true;
-        cancelAnimationFrame(animationId); // Stop auto-scroll
-        startX = e.pageX - wrapper.offsetLeft;
-        scrollLeft = wrapper.scrollLeft;
+    wrapper.addEventListener('mouseenter', () => {
+        isHovered = true;
     });
 
     wrapper.addEventListener('mouseleave', () => {
-        if (isDown) {
-            isDown = false;
-            startAutoScroll();
-        }
+        isHovered = false;
     });
 
-    wrapper.addEventListener('mouseup', () => {
-        isDown = false;
-        startAutoScroll();
-    });
-
-    wrapper.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
+    wrapper.addEventListener('wheel', (e) => {
         e.preventDefault();
-        const x = e.pageX - wrapper.offsetLeft;
-        const walk = (x - startX) * 1.5; // Drag sensitivity
-        wrapper.scrollLeft = scrollLeft - walk;
-    });
 
-    // Touch Events (Mobile)
+        wrapper.scrollLeft += e.deltaY;
+
+        if (wrapper.scrollLeft >= scrollWidth) {
+            wrapper.scrollLeft -= scrollWidth;
+        } else if (wrapper.scrollLeft <= 0) {
+            wrapper.scrollLeft += scrollWidth;
+        }
+    }, { passive: false });
+
     wrapper.addEventListener('touchstart', () => {
-        cancelAnimationFrame(animationId);
+        isHovered = true;
     }, { passive: true });
 
     wrapper.addEventListener('touchend', () => {
-        startAutoScroll();
+        isHovered = false;
     }, { passive: true });
 }
 
