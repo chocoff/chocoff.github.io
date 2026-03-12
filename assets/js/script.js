@@ -1,4 +1,4 @@
-// 1. Smooth Scroll for Navigation
+// Smooth Scroll for Navigation
 document.querySelectorAll('.navbar a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
@@ -19,18 +19,77 @@ document.querySelectorAll('.navbar a').forEach(anchor => {
     });
 });
 
-// 2. Infinite Scroll Logic
+// --- PROJECTS INFINITE SCROLL & DRAG LOGIC ---
+const wrapper = document.querySelector('.projects-wrapper');
 const track = document.querySelector('.projects-track');
-if (track) {
-    // Duplicate the project cards to create a seamless loop
+
+if (wrapper && track) {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let scrollSpeed = 1; // Speed of auto-scroll
+    let animationId;
+
+    // dup cards for loop effect
     const cards = Array.from(track.children);
     cards.forEach(card => {
         const clone = card.cloneNode(true);
         track.appendChild(clone);
     });
+
+    // auto-scroll function
+    const startAutoScroll = () => {
+        wrapper.scrollLeft += scrollSpeed;
+        
+        // reset to start when halfway point is reached
+        if (wrapper.scrollLeft >= track.offsetWidth / 2) {
+            wrapper.scrollLeft = 0;
+        }
+        animationId = requestAnimationFrame(startAutoScroll);
+    };
+
+    // start auto-scroll initially
+    startAutoScroll();
+
+    // Mouse Events (Desktop Drag)
+    wrapper.addEventListener('mousedown', (e) => {
+        isDown = true;
+        cancelAnimationFrame(animationId); // Stop auto-scroll
+        startX = e.pageX - wrapper.offsetLeft;
+        scrollLeft = wrapper.scrollLeft;
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+        if (isDown) {
+            isDown = false;
+            startAutoScroll();
+        }
+    });
+
+    wrapper.addEventListener('mouseup', () => {
+        isDown = false;
+        startAutoScroll();
+    });
+
+    wrapper.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - wrapper.offsetLeft;
+        const walk = (x - startX) * 1.5; // Drag sensitivity
+        wrapper.scrollLeft = scrollLeft - walk;
+    });
+
+    // Touch Events (Mobile)
+    wrapper.addEventListener('touchstart', () => {
+        cancelAnimationFrame(animationId);
+    }, { passive: true });
+
+    wrapper.addEventListener('touchend', () => {
+        startAutoScroll();
+    }, { passive: true });
 }
 
-// 3. Gmail Copy Script (from original)
+// Gmail Copy Script 
 const gmailLink = document.getElementById("gmail-link");
 if (gmailLink) {
     gmailLink.addEventListener("click", function (e) {
@@ -42,7 +101,7 @@ if (gmailLink) {
     });
 }
 
-// 4. Active Link Switching logic (Enhanced)
+// Active Link Switching logic (Enhanced)
 window.addEventListener("scroll", () => {
     let current = "";
     const sections = document.querySelectorAll("section");

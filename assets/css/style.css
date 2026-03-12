@@ -80,7 +80,7 @@ section {
 .heading {
   font-size: 45px;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .heading span {
@@ -92,6 +92,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 10%;
   gap: 2rem;
 }
 
@@ -138,7 +139,7 @@ section {
 }
 
 .home-img .bonfire_png {
-  width: 400px;
+  width: 300px;
   filter: drop-shadow(0 0 20px var(--embers)) brightness(1.2);
   animation: flicker 3s infinite alternate;
 }
@@ -178,12 +179,12 @@ section {
 
 /* --- ABOUT --- */
 .about {
-  background: var(--ash-grey);
+  background: var(--bg-dark);
 }
 
 .about-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
 
@@ -199,7 +200,7 @@ section {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 20px;
+  padding: 15px;
   transition: 0.4s ease;
 }
 
@@ -352,29 +353,31 @@ section {
 /* PROJECTS HORIZONTAL SCROLLER */
 .projects-wrapper {
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
   padding: 20px 0;
   position: relative;
+  cursor: grab;
+  /*hiding scrollbar*/
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.projects-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.projects-wrapper:active {
+  cursor: grabbing;
 }
 
 .projects-track {
   display: flex;
   width: max-content;
   gap: 2.5rem;
-  animation: scroll 40s linear infinite;
 }
 
 .projects-track:hover {
   animation-play-state: paused;
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(calc(-50%));
-  }
 }
 
 /* Ensure project cards have a fixed width in the scroller */
