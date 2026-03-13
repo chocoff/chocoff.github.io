@@ -248,9 +248,11 @@ section {
 }
 
 .card-back p {
+  width: 400px;
   font-size: 0.9rem;
   font-weight: 500;
   line-height: 1.4;
+  overflow: auto;
 }
 
 .about-card:hover {
