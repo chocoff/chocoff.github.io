@@ -19,63 +19,49 @@ document.querySelectorAll('.navbar a').forEach(anchor => {
     });
 });
 
-// --- PROJECTS INFINITE SCROLL & WHEEL LOGIC ---
-const wrapper = document.querySelector('.projects-wrapper');
-const track = document.querySelector('.projects-track');
+// AUTO SCROLL
+const slider = document.querySelector('.projects-slider');
+let speed = 1.2; // Adjust this for overall speed
+let direction = 1;
+let isPaused = false;
 
-if (wrapper && track) {
-    let scrollSpeed = 1; 
-    let isHovered = false;
-    let animationId;
+let currentX = slider.scrollLeft;
 
-    const cards = Array.from(track.children);
-    cards.forEach(card => {
-        const clone = card.cloneNode(true);
-        track.appendChild(clone);
-    });
+function autoScroll() {
+    if (!isPaused) {
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
 
-    const scrollWidth = track.scrollWidth / 2;
+        // update the virtual currentX position (firefox workaround)
+        currentX += speed * direction;
 
-    const animate = () => {
-        if (!isHovered) {
-            wrapper.scrollLeft += scrollSpeed;
-            if (wrapper.scrollLeft >= scrollWidth) {
-                wrapper.scrollLeft -= scrollWidth;
-            }
+        slider.scrollLeft = currentX;
+
+        // handle Direction Reversal
+        if (currentX >= maxScroll) {
+            currentX = maxScroll; 
+            direction = -1;
+        } else if (currentX <= 0) {
+            currentX = 0; 
+            direction = 1;
         }
-        animationId = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    wrapper.addEventListener('mouseenter', () => {
-        isHovered = true;
-    });
-
-    wrapper.addEventListener('mouseleave', () => {
-        isHovered = false;
-    });
-
-    wrapper.addEventListener('wheel', (e) => {
-        e.preventDefault();
-
-        wrapper.scrollLeft += e.deltaY;
-
-        if (wrapper.scrollLeft >= scrollWidth) {
-            wrapper.scrollLeft -= scrollWidth;
-        } else if (wrapper.scrollLeft <= 0) {
-            wrapper.scrollLeft += scrollWidth;
-        }
-    }, { passive: false });
-
-    wrapper.addEventListener('touchstart', () => {
-        isHovered = true;
-    }, { passive: true });
-
-    wrapper.addEventListener('touchend', () => {
-        isHovered = false;
-    }, { passive: true });
+    }
+    requestAnimationFrame(autoScroll);
 }
+
+// Update our virtual position if the user scrolls manually
+slider.addEventListener('scroll', () => {
+    // This syncs the virtual X with the user's manual movement
+    currentX = slider.scrollLeft;
+    
+    const maxScroll = slider.scrollWidth - slider.clientWidth;
+    if (currentX >= maxScroll - 1) direction = -1;
+    if (currentX <= 0) direction = 1;
+});
+
+slider.addEventListener('mouseenter', () => isPaused = true);
+slider.addEventListener('mouseleave', () => isPaused = false);
+
+autoScroll();
 
 // Gmail Copy Script 
 const gmailLink = document.getElementById("gmail-link");

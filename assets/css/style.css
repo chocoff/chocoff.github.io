@@ -305,24 +305,46 @@ section {
 }
 
 /* --- PROJECTS --- */
-.projects-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+.projects {
+  width: 100%;
+  max-width: 1300px;
+  padding: 20px;
+  margin: 0 auto;
+  text-align: center;
+}
+.projects-slider {
+  display: flex;
   gap: 2.5rem;
+  overflow-x: auto;
+  padding: 2rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-color: var(--embers);
+}
+.projects-slider::-webkit-scrollbar {
+  display: none;
+}
+.projects-slider::-webkit-scrollbar-thumb {
+  background: var(--embers);
+  border-radius: 10px;
 }
 
 .project-card {
+  flex: 0 0 380px;
+  min-width: 320px;
   background: var(--ash-grey);
   border-radius: 15px;
   overflow: hidden;
   border: 1px solid #333;
   transition: 0.5s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .project-card:hover {
   transform: translateY(-10px);
   border-color: var(--embers);
-  box-shadow: 0 10px 30px rgba(255, 77, 0, 0.2);
+  box-shadow: 0 10px 30px var(--embers);
 }
 
 .project-img img {
@@ -332,6 +354,10 @@ section {
 }
 .project-info {
   padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .project-info h4 {
   font-size: 22px;
@@ -347,6 +373,7 @@ section {
 .tech-stack {
   margin-bottom: 20px;
   display: flex;
+  justify-content: center;
   gap: 15px;
 }
 
@@ -369,36 +396,6 @@ section {
   border-radius: 5px;
   text-decoration: none;
   font-weight: 600;
-}
-
-/* PROJECTS HORIZONTAL SCROLLER */
-.projects-wrapper {
-  width: 100%;
-  overflow-x: hidden;
-  padding: 20px 0;
-  position: relative;
-  scroll-behavior: smooth;
-}
-
-.projects-wrapper::-webkit-scrollbar {
-  display: none;
-}
-
-.projects-track {
-  display: flex;
-  width: max-content;
-  gap: 2.5rem;
-  transition: none;
-}
-
-.projects-track:hover {
-  animation-play-state: paused;
-}
-
-/* Ensure project cards have a fixed width in the scroller */
-.projects-track .project-card {
-  width: 350px;
-  flex-shrink: 0;
 }
 
 /* MY BEST EFFORT ON RESPONSIVENESS */
