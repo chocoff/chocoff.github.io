@@ -63,17 +63,23 @@ slider.addEventListener('mouseleave', () => isPaused = false);
 
 autoScroll();
 
-// Gmail Copy Script 
-const gmailLink = document.getElementById("gmail-link");
-if (gmailLink) {
-    gmailLink.addEventListener("click", function (e) {
-        e.preventDefault();
-        const email = this.getAttribute("data-email");
-        navigator.clipboard.writeText(email).then(() => {
-            alert("Email copied: " + email);
+// copy mail either by clicking contact or the mail icon
+function setupMailCopy(element){
+    if (element){
+        element.addEventListener("click", function (e) {
+            e.preventDefault();
+            const email = this.getAttribute("data-email");
+            navigator.clipboard.writeText(email).then(() => {
+                alert("Email copied: " + email);
+            });
         });
-    });
+    }
 }
+const navMailLink = document.getElementById("mail-link");
+setupMailCopy(navMailLink);
+
+const mailIcon = document.querySelector(".mail-icon");
+setupMailCopy(mailIcon);
 
 // Active Link Switching logic (Enhanced)
 window.addEventListener("scroll", () => {
