@@ -320,6 +320,8 @@ section {
   scrollbar-width: none;
   -ms-overflow-style: none;
   scrollbar-color: var(--embers);
+  overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 .projects-slider::-webkit-scrollbar {
   display: none;

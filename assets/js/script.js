@@ -63,6 +63,21 @@ slider.addEventListener('mouseleave', () => isPaused = false);
 
 autoScroll();
 
+slider.addEventListener("wheel", (e) => {
+
+    e.preventDefault();
+
+    autoScrollActive = false;
+
+    slider.scrollLeft += e.deltaY * 1.5;
+
+    clearTimeout(slider.resumeTimeout);
+
+    slider.resumeTimeout = setTimeout(() => {
+        autoScrollActive = true;
+    }, 1500);
+});
+
 // copy mail either by clicking contact or the mail icon
 function setupMailCopy(element){
     if (element){
