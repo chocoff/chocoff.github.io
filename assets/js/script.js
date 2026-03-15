@@ -77,6 +77,19 @@ slider.addEventListener("wheel", (e) => {
         autoScrollActive = true;
     }, 1500);
 });
+// Mobile touch events
+slider.addEventListener('touchstart', pauseTemporarily);
+slider.addEventListener('touchend', () => {
+    // Resume after a short delay, but if they touch again quickly it will be paused again
+    if (pauseTimeout) clearTimeout(pauseTimeout);
+    pauseTimeout = setTimeout(() => {
+        isPaused = false;
+    }, 2000);
+});
+slider.addEventListener('touchcancel', () => {
+    if (pauseTimeout) clearTimeout(pauseTimeout);
+    isPaused = false;
+});
 
 // copy mail either by clicking contact or the mail icon
 function setupMailCopy(element){
