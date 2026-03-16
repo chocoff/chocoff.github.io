@@ -376,11 +376,13 @@ section {
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .tech-stack i {
-  font-size: 28px;
+  font-size: 24px;
   color: var(--text-silver);
   transition: 0.3s;
 }
@@ -390,6 +392,39 @@ section {
   transform: scale(1.2);
 }
 
+.tech-item {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 5px 10px;
+  border-radius: 20px;
+  transition: 0.3s ease;
+}
+
+.tech-item:hover {
+  background: rgba(255, 77, 0, 0.1); /* Slight highlight background */
+}
+.tech-item:hover i {
+  color: var(--embers);
+  transform: scale(1.1);
+}
+.tech-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--embers);
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-left: 0;
+}
+
+.tech-item:hover .tech-label {
+  max-width: 150px; /* Adjust based on longest word */
+  opacity: 1;
+  margin-left: 8px;
+}
 .project-info .btn {
   display: inline-block;
   padding: 8px 20px;
