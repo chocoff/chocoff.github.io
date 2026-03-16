@@ -33,6 +33,12 @@ body {
   color: var(--text-silver);
   overflow-x: hidden;
 }
+a:visited {
+  color: darkblue;
+}
+a {
+  color: darkblue;
+}
 
 /* --- HEADER --- */
 .header {
@@ -54,6 +60,9 @@ body {
   color: #ededed;
   text-decoration: none;
   font-weight: 600;
+}
+.logo:visited {
+  color: #ededed;
 }
 
 .navbar a {
@@ -238,7 +247,7 @@ section {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 77, 0, 0.9);
+  background: var(--embers);
   padding: 20px;
   display: flex;
   align-items: center;
@@ -249,8 +258,8 @@ section {
 
 .card-back p {
   width: 400px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: bold;
   line-height: 1.4;
   overflow: auto;
 }
@@ -296,6 +305,7 @@ section {
   gap: 0.5rem;
   font-size: 1.25rem;
   color: var(--text-dark);
+  font-weight: bold;
 }
 
 .skills-compact i {
