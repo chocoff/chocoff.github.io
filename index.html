@@ -4,31 +4,78 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Fernando Rojas | Software Dev</title>
+		<title>Fernando Rojas | Choco</title>
 
 		<link rel="icon" href="assets/media/bonfire.png" type="image/x-icon">
 		<link rel="stylesheet" href="assets/css/style.css">
 		<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 	</head>
 	<body>
+		<!-- Background Video THIS IS A PENDING IDEA FOR THE BACKGROUND
+		<video autoplay loop muted playsinline id="bg-video">
+			<source src="assets/media/embers.mp4" type="video/mp4">
+		</video> -->
 		<header class="header">
 			<a href="#" class="logo">Choco.</a>
 			<nav class="navbar">
 				<a href="#home" class="active">Home</a>
-				<a href="#about">About</a>
+				<!-- <a href="#about">About</a> -->
 				<a href="#projects">Projects</a>
 				<a href="#" id="mail-link" data-email="rojasmfer@proton.me">Contact</a>
 			</nav>
 		</header>
 
-		<!-- HOME SECTION -->
+		<!-- HOME & ABOUT SECTION -->
 		<section class="home" id="home">
+
+            <!-- LEFT COLUMN: Education & Experience -->
+            <div class="about-side left-side">
+				<div class="about-icons-container">
+					<div class="about-icon" data-target="edu" title="Education"><i class="bx bxs-graduation"></i></div>
+					<div class="about-icon" data-target="exp" title="Experience"><i class="bx bxs-briefcase"></i></div>
+					<div class="about-icon" data-target="skills" title="Skills"><i class="bx bxs-cog"></i></div>
+					<div class="about-icon" data-target="int" title="Interests"><i class="bx bxs-game"></i></div>
+				</div>
+                <div class="about-display">
+                    <div class="about-content active" id="default-info">
+                        <p class="highlight-text">Hover over the side icons to learn more about me!</p>
+                    </div>
+                    <!-- Education -->
+                    <div class="about-content" id="edu">
+                        <h3>Education</h3>
+                        <p>B.S. Computer Science and Information Engineering<br>NTUST (Taiwan) & UPTP (Paraguay).<br>Coursework: Data Structures, OOP, AI/ML, OS, Networks.</p>
+                    </div>
+                    <!-- Experience -->
+                    <div class="about-content" id="exp">
+                        <h3>Experience</h3>
+                        <p>Software Intern @ <a href="cast.com.py" target="_blank">Cast S.A.</a><br>Developed RASA-based AI conversational agents to automate client support workflows.</p>
+                    </div>
+                    <!-- Skills -->
+                    <div class="about-content" id="skills">
+                        <h3>Skills</h3>
+                        <div class="skills-compact">
+                            <span><i class="bx bxl-c-plus-plus"></i> C++/C#</span>
+                            <span><i class="bx bxl-python"></i> Python/AI-ML</span>
+                            <span><i class="bx bxl-java"></i> Java/OpenGL</span>
+                        </div>
+                    </div>
+                    <!-- Interests -->
+                    <div class="about-content" id="int">
+                        <h3>Interests</h3>
+                        <p>Low-level programming, computer graphics, souls-like games, and Brandon Sanderson books.</p>
+                    </div>
+                </div>
+			</div>
+
+            <!-- CENTER COLUMN -->
 			<div class="home-content">
+				<div class="me_pic"></div>
 				<h1>Hi, I'm Choco.</h1>
-				<h3>Software Developer</h3>
+				<h3>Software Engineer</h3>
 				<p>
-					Born in Paraguay and currently studying CS at NTUST (Taiwan). <br>
-					I aim to build intuitive software and have a deep passion for videogame development.
+					Born in Paraguay, I am a CSIE student from UPTP going through an acadaemic exchange program at NTUST (Taiwan). <br>
+					I aim to build intuitive software and have a deep passion for videogame development. <br>
+					Currently I am an intern at International Games System as a Software Engineer in the Arcade Department (Game Dev).
 				</p>
 				<div class="btn-box">
 					<a href="https://www.linkedin.com/in/fernando-rojaschoco" target="_blank">Hire me</a>
@@ -42,153 +89,76 @@
 					<a href="https://wa.me/595981133155" target="_blank"><i class="bx bxl-whatsapp"></i></a>
 				</div>
 			</div>
-			<div class="home-img">
-				<div class="me_pic"></div>
-			</div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="blog right-side">
+				<h2 class="heading blog-heading"><span>Blog coming soon...</span></h2>
+				<div class="blog-list">
+					<div class="blog-slot">
+						<h4>Work in Progress</h4>
+						<p>This section will include some personal related content.</p>
+					</div>
+
+					<div class="blog-slot">
+						<h4>Journey before destination</h4>
+						<p>Read Mistborn</p>
+					</div>
+
+					<div class="blog-slot">
+						<h4>Media content</h4>
+						<p>Posts featuring some achievements.</p>
+					</div>
+					
+					<div class="blog-slot">
+						<h4>Future Goals</h4>
+						<p>Improve</p>
+					</div>
+				</div>
+            </div>
 		</section>
 
-		<!-- ABOUT SECTION -->
-		<section class="about" id="about">
-			<h2 class="heading">About <span>Me</span></h2>
-			<div class="about-container">
-				<div class="about-card">
-					<div class="card-front">
-						<i class="bx bxs-graduation"></i>
-						<h3>Education</h3>
-					</div>
-					<div class="card-back">
-						<p>B.S. Computer Science and Information Engineering<br>NTUST (Taiwan) & UPTP (Paraguay).<br>Coursework: Data Structures and OOP, AI/ML, OS,<br>
-							Networks, VLSI/IC Design, Embedded Systems.</p>
-					</div>
-				</div>
-
-				<div class="about-card">
-					<div class="card-front">
-						<i class="bx bxs-briefcase"></i>
-						<h3>Experience</h3>
-					</div>
-					<div class="card-back">
-						<p>Software Intern @ <a href="cast.com.py" target="_blank">Cast S.A.</a><br>Developed RASA-based AI conversational agents to automate client support workflows.</p>
-					</div>
-				</div>
-
-				<div class="about-card">
-					<div class="card-front">
-						<i class="bx bxs-cog"></i>
-						<h3>Skills</h3>
-					</div>
-					<div class="card-back">
-						<div class="skills-compact">
-							<span><i class="bx bxl-c-plus-plus"></i>
-							C++/C#</span>
-							<span><i class="bx bxl-python"></i>
-							Python/AI-ML</span>
-							<span><i class="bx bxl-java"></i>
-							Java/OpenGL</span>
-							<span><i class="bx bxl-docker"></i>
-							Docker/Git</span>
-							<span><i class="bx bxl-unity"></i>
-							Unity/Games</span>
-						</div>
-					</div>
-				</div>
-
-				<div class="about-card">
-					<div class="card-front">
-						<i class="bx bxs-game"></i>
-						<h3>Interests</h3>
-					</div>
-					<div class="card-back">
-						<p>I enjoy low-level programming, computer graphics, and building with comercial and custom game engines.
-							Big fan of souls-like games and Brandon Sanderson. Completionist and <a href="https://open.spotify.com/user/gc2bigsxouz0a30wdtpzwe3cf?si=35a5656069b4451c" target="_blank">music enjoyer</a>.</p>
-					</div>
-				</div>
-			</div>
-		</section>
 
 		<!-- PROJECTS SECTION -->
-		<section class="projects">
+		<section class="projects" id="projects">
 			<h2 class="heading">My <span>Projects</span></h2>
-			<div class="projects-slider">
-				<!-- Project 1: Brain Computer Interface -->
+			<div class="projects-grid">
 				<div class="project-card">
 					<div class="project-img"><img src="assets/media/bci.jpeg" alt="BCI"></div>
 					<div class="project-info">
 						<h4>BCI for Game Control</h4>
 						<p>Translating EEG readings into 3D movement commands using Motor Imagery and Deep Learning.</p>
 						<div class="tech-stack">
-
-							<div class="tech-item">
-								<i class="bx bxs-brain"></i>
-								<span class="tech-label">BCI</span>
-							</div>
-
-							<div class="tech-item">
-								<i class="bx bxl-python"></i>
-								<span class="tech-label">Python</span>
-							</div>
-
-							<div class="tech-item">
-								<i class="bx bxl-unity"></i>
-								<span class="tech-label">Unity</span>
-							</div>
+							<div class="tech-item"><i class="bx bxs-brain"></i><span class="tech-label">BCI</span></div>
+							<div class="tech-item"><i class="bx bxl-python"></i><span class="tech-label">Python</span></div>
+							<div class="tech-item"><i class="bx bxl-unity"></i><span class="tech-label">Unity</span></div>
 						</div>
 						<a href="assets/media/bci_report.pdf" class="btn" download>View Report</a>
 					</div>
 				</div>
-				<!-- Project 2: Reforest-AI -->
 				<div class="project-card">
 					<div class="project-img"><img src="assets/media/forest.jpg" alt="Reforest"></div>
 					<div class="project-info">
 						<h4>Reforest AI</h4>
-						<p>ML pipeline analyzing satellite imagery to identify optimal reforestation sites with 94% accuracy.</p>
+						<p>ML pipeline analyzing satellite imagery to identify optimal reforestation sites.</p>
 						<div class="tech-stack">
-
-							<div class="tech-item">
-								<i class="bx bxl-python"></i>
-								<span class="tech-label">Python</span>
-							</div>
-
-							<div class="tech-item">
-								<i class="bx bx-globe"></i>
-								<span class="tech-label">Earth Engine</span>
-							</div>
-
-							<div class="tech-item">
-								<i class="bx bx-network-chart"></i>
-								<span class="tech-label">Neural Networks</span>
-							</div>
+							<div class="tech-item"><i class="bx bxl-python"></i><span class="tech-label">Python</span></div>
+							<div class="tech-item"><i class="bx bx-globe"></i><span class="tech-label">Earth Engine</span></div>
 						</div>
 						<a href="https://github.com/chocoff/reforest-ai" class="btn" target="_blank">View Source</a>
 					</div>
 				</div>
-				<!-- Project 3: SigmaChat -->
 				<div class="project-card">
 					<div class="project-img"><img src="assets/media/sigmachat.png" alt="SigmaChat"></div>
 					<div class="project-info">
 						<h4>SigmaChat</h4>
 						<p>Real-time chat app featuring coding competitions and low-latency Socket.io communication.</p>
 						<div class="tech-stack">
-
-							<div class="tech-item">
-								<i class="bx bxl-flask"></i>
-								<span class="tech-label">Flask</span>
-							</div>
-
-							<div class="tech-item">
-								<i class="bx bxl-mongodb"></i>
-								<span class="tech-label">MongoDB</span>
-							</div>
-
-							<div class="tech-item">
-								<i class="bx bxs-data" title="MySQL"></i>
-								<span class="tech-label">MySQL</span>
-							</div>
+							<div class="tech-item"><i class="bx bxl-flask"></i><span class="tech-label">Flask</span></div>
+							<div class="tech-item"><i class="bx bxl-mongodb"></i><span class="tech-label">MongoDB</span></div>
 						</div>
 						<a href="https://github.com/chocoff/sigmachat" class="btn" target="_blank">View Source</a>
 					</div>
 				</div>
-				<!-- Project 4: Java 3D Game -->
 				<div class="project-card">
 					<div class="project-img"><img src="assets/media/javagame.png" alt="Java Game"></div>
 					<div class="project-info">
@@ -209,7 +179,6 @@
 						<a href="https://github.com/chocoff/lwjgl_blackjack" class="btn" target="_blank">View Source</a>
 					</div>
 				</div>
-				<!-- Project 5: SkyLimit -->
 				<div class="project-card">
 					<div class="project-img"><img src="assets/media/skylimit.jpeg" alt="SkyLimit"></div>
 					<div class="project-info">
@@ -230,7 +199,6 @@
 						<a href="https://github.com/pablolird/skylimit" class="btn" target="_blank">View Source</a>
 					</div>
 				</div>
-				<!-- Project 6: Tower of the Forest -->
 				<div class="project-card">
 					<div class="project-img"><img src="assets/media/totf.jpeg" alt="Tower of the Forest"></div>
 					<div class="project-info">
@@ -253,6 +221,11 @@
 				</div>
 			</div>
 		</section>
+
+		<!-- FOOTER SECTION -->
+		<footer class="footer">
+			<p>&copy; 2026 <span>Fernando Rojas</span>. All Rights Reserved.</p>
+		</footer>
 
 		<script src="assets/js/script.js"></script>
 	</body>

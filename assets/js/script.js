@@ -1,9 +1,8 @@
-// Smooth Scroll for Navigation
+//  scroll for Navigation
 document.querySelectorAll('.navbar a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
         
-        // Only trigger smooth scroll for internal links
         if (href.startsWith('#')) {
             e.preventDefault();
             const targetId = href.substring(1);
@@ -11,7 +10,7 @@ document.querySelectorAll('.navbar a').forEach(anchor => {
             
             if (targetElement) {
                 window.scrollTo({
-                    top: targetElement.offsetTop - 70, // Offset for header
+                    top: targetElement.offsetTop - 70, 
                     behavior: 'smooth'
                 });
             }
@@ -19,66 +18,28 @@ document.querySelectorAll('.navbar a').forEach(anchor => {
     });
 });
 
-// AUTO SCROLL
-const slider = document.querySelector('.projects-slider');
-let speed = 1.2; // Adjust this for overall speed
-let direction = 1;
-let isPaused = false;
+// ABOUT SECTION HOVER LOGIC
+const aboutIcons = document.querySelectorAll('.about-icon');
+const aboutContents = document.querySelectorAll('.about-content');
+const defaultInfo = document.getElementById('default-info');
 
-let currentX = slider.scrollLeft;
+aboutIcons.forEach(icon => {
+    icon.addEventListener('mouseenter', () => {
+        // Hide everything first
+        aboutContents.forEach(content => content.classList.remove('active'));
+        // Show specific target
+        const targetId = icon.getAttribute('data-target');
+        document.getElementById(targetId).classList.add('active');
+    });
 
-function autoScroll() {
-    if (!isPaused) {
-        const maxScroll = slider.scrollWidth - slider.clientWidth;
-
-        // update the virtual currentX position (firefox workaround)
-        currentX += speed * direction;
-
-        slider.scrollLeft = currentX;
-
-        // handle Direction Reversal
-        if (currentX >= maxScroll) {
-            currentX = maxScroll; 
-            direction = -1;
-        } else if (currentX <= 0) {
-            currentX = 0; 
-            direction = 1;
-        }
-    }
-    requestAnimationFrame(autoScroll);
-}
-
-// Update our virtual position if the user scrolls manually
-slider.addEventListener('scroll', () => {
-    // This syncs the virtual X with the user's manual movement
-    currentX = slider.scrollLeft;
-    
-    const maxScroll = slider.scrollWidth - slider.clientWidth;
-    if (currentX >= maxScroll - 1) direction = -1;
-    if (currentX <= 0) direction = 1;
+    // Revert to default when mouse leaves (may change in the future)
+    icon.addEventListener('mouseleave', () => {
+        aboutContents.forEach(content => content.classList.remove('active'));
+        defaultInfo.classList.add('active');
+    });
 });
 
-slider.addEventListener('mouseenter', () => isPaused = true);
-slider.addEventListener('mouseleave', () => isPaused = false);
-
-autoScroll();
-
-slider.addEventListener("wheel", (e) => {
-
-    e.preventDefault();
-
-    autoScrollActive = false;
-
-    slider.scrollLeft += e.deltaY * 1.5;
-
-    clearTimeout(slider.resumeTimeout);
-
-    slider.resumeTimeout = setTimeout(() => {
-        autoScrollActive = true;
-    }, 1500);
-});
-
-// copy mail either by clicking contact or the mail icon
+// Copy mail either by clicking contact or the mail icon
 function setupMailCopy(element){
     if (element){
         element.addEventListener("click", function (e) {
@@ -96,7 +57,7 @@ setupMailCopy(navMailLink);
 const mailIcon = document.querySelector(".mail-icon");
 setupMailCopy(mailIcon);
 
-// Active Link Switching logic (Enhanced)
+// Active link switching logic
 window.addEventListener("scroll", () => {
     let current = "";
     const sections = document.querySelectorAll("section");
@@ -104,7 +65,6 @@ window.addEventListener("scroll", () => {
 
     sections.forEach((section) => {
         const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
         if (pageYOffset >= sectionTop - 150) {
             current = section.getAttribute("id");
         }
