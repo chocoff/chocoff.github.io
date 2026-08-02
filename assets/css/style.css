@@ -40,7 +40,20 @@ body {
 }
 
 a, a:visited {
-  color: darkblue;
+  color: var(--warm-glow);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--embers);
+}
+
+/* Styling for links within about-content section */
+.about-content a{
+  color: var(--embers);
+  text-decoration: underline;
+  font-weight: 600; 
 }
 
 /* --- HEADER --- */
@@ -122,6 +135,10 @@ section {
   max-width: 350px;
 }
 
+.about-side:hover .about-icons-container {
+  transform: translateY(-50px);
+}
+
 /* took me a while but the icons are now in a row inside the column yay */
 .about-side .icons-row {
   display: flex;
@@ -160,6 +177,7 @@ section {
   gap: 1rem;
   width: 100%;
   justify-items: center;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* center content */
@@ -324,20 +342,21 @@ section {
 
 .about-display {
   width: 100%;
-  min-height: 130px;
+  min-height: 400px;
   position: relative;
-  padding: 1.5rem;
-  position: relative;
+  padding: 1rem;
 }
+
 .about-content {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
+  transform: translateX(-50%);
+  width: 100%;
   opacity: 0;
   visibility: hidden;
-  transition: 0.4s ease-in-out;
+  transition: 0.3s ease-in-out;
+
 }
 .about-content.active {
   opacity: 1;
@@ -357,6 +376,65 @@ section {
   justify-content: center;
   gap: 1rem;
 }
+
+/* --- INNER SYMBOLS STYLING --- */
+.info-card {
+  background: rgba(26, 26, 26, 0.6);
+  border: 1px solid var(--text-dark);
+  border-radius: 10px;
+  padding: 1rem;
+  backdrop-filter: blur(5px);
+  opacity: 0; /* Hidden initially, revealed by animation */
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.info-card:hover {
+  border-color: var(--warm-glow);
+  box-shadow: 0 4px 15px rgba(230, 126, 34, 0.1);
+}
+
+/* Experience Cards Container */
+.exp-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* Skills Cards specific tweaks */
+.skills-compact .info-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.7rem 1.2rem;
+  font-weight: 500;
+}
+
+/* --- ANIMATIONS ---*/
+@keyframes slideInRTL {
+  0% { opacity: 0; transform: translateX(40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLTR {
+  0% { opacity: 0; transform: translateX(-40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Trigger animations ONLY when the parent tab is hovered/active */
+.about-content.active .slide-rtl {
+  animation: slideInRTL 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.about-content.active .slide-ltr {
+  animation: slideInLTR 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Progressive Timing / Staggered effect for Experience & Skills */
+.about-content.active .item-1 { animation-delay: 0.1s; }
+.about-content.active .item-2 { animation-delay: 0.25s; }
+.about-content.active .item-3 { animation-delay: 0.4s; }
+.about-content.active .item-4 { animation-delay: 0.55s; }
+.about-content.active .item-5 { animation-delay: 0.7s; }
 
 /* --- PROJECTS --- */
 .projects {

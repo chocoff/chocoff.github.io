@@ -23,19 +23,44 @@ const aboutIcons = document.querySelectorAll('.about-icon');
 const aboutContents = document.querySelectorAll('.about-content');
 const defaultInfo = document.getElementById('default-info');
 
+// Variable to hold timer
+let hoverTimeout;
+
 aboutIcons.forEach(icon => {
     icon.addEventListener('mouseenter', () => {
-        // Hide everything first
+        // Cancel any pending hide actions when entering an icon
+        clearTimeout(hoverTimeout); 
+        
+        // Hide all contents
         aboutContents.forEach(content => content.classList.remove('active'));
+        
         // Show specific target
         const targetId = icon.getAttribute('data-target');
         document.getElementById(targetId).classList.add('active');
     });
 
-    // Revert to default when mouse leaves (may change in the future)
     icon.addEventListener('mouseleave', () => {
-        aboutContents.forEach(content => content.classList.remove('active'));
-        defaultInfo.classList.add('active');
+        // Instead of hiding immediately, wait 300 milliseconds
+        hoverTimeout = setTimeout(() => {
+            aboutContents.forEach(content => content.classList.remove('active'));
+            defaultInfo.classList.add('active');
+        }, 300);
+    });
+});
+
+// Add listeners to the content cards so they stay open when hovered
+aboutContents.forEach(content => {
+    content.addEventListener('mouseenter', () => {
+        // If the mouse reaches the content before 300ms, cancel the hide timer
+        clearTimeout(hoverTimeout);
+    });
+    
+    content.addEventListener('mouseleave', () => {
+        // If the mouse leaves the content card, hide it after a short delay
+        hoverTimeout = setTimeout(() => {
+            aboutContents.forEach(c => c.classList.remove('active'));
+            defaultInfo.classList.add('active');
+        }, 300);
     });
 });
 
