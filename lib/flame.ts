@@ -83,6 +83,8 @@ export function lightImmediately() {
 }
 
 export function hydratePhase() {
+  // Tells the pre-paint failsafe that the app is alive and the intro will work.
+  document.documentElement.dataset.ready = "true";
   const initial = document.documentElement.dataset.phase;
   if (initial === "lit") {
     phase = "lit";

@@ -254,6 +254,9 @@ html[data-phase="kindling"] .intro {
   position: fixed;
   inset: 0;
   z-index: 50;
+}
+html[data-ready] .intro,
+html[data-ready] .intro-kindle {
   cursor: none;
 }
 
@@ -314,7 +317,7 @@ html[data-phase="kindling"] .intro {
   border: 0;
   border-radius: 50%;
   background: transparent;
-  cursor: none;
+  cursor: pointer;
   padding: 0;
 }
 
