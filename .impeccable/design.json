@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-09T23:00:00Z",
+  "title": "Design System: Choco Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "soot": {
+        "role": "neutral",
+        "displayName": "Soot",
+        "canonical": "#0c0a08",
+        "tonalRamp": [
+          "#050403",
+          "#0c0a08",
+          "#14100c",
+          "#1d1813",
+          "#2a221b",
+          "#3b3128",
+          "#5a4c3f",
+          "#8a7e70"
+        ]
+      },
+      "char": {
+        "role": "neutral",
+        "displayName": "Char",
+        "canonical": "#14100c",
+        "tonalRamp": [
+          "#050403",
+          "#0c0a08",
+          "#14100c",
+          "#1d1813",
+          "#2a221b",
+          "#3b3128",
+          "#5a4c3f",
+          "#8a7e70"
+        ]
+      },
+      "stone": {
+        "role": "neutral",
+        "displayName": "Stone",
+        "canonical": "#1d1813",
+        "tonalRamp": [
+          "#0c0a08",
+          "#14100c",
+          "#1d1813",
+          "#2a221b",
+          "#3b3128",
+          "#5a4c3f",
+          "#8a7e70",
+          "#b0a493"
+        ]
+      },
+      "stone-2": {
+        "role": "neutral",
+        "displayName": "Stone 2",
+        "canonical": "#2a221b",
+        "tonalRamp": [
+          "#0c0a08",
+          "#14100c",
+          "#1d1813",
+          "#2a221b",
+          "#3b3128",
+          "#5a4c3f",
+          "#8a7e70",
+          "#b0a493"
+        ]
+      },
+      "iron": {
+        "role": "neutral",
+        "displayName": "Iron",
+        "canonical": "#3b3128",
+        "tonalRamp": [
+          "#14100c",
+          "#1d1813",
+          "#2a221b",
+          "#3b3128",
+          "#5a4c3f",
+          "#8a7e70",
+          "#b0a493",
+          "#e9dfcd"
+        ]
+      },
+      "bone": {
+        "role": "neutral",
+        "displayName": "Bone",
+        "canonical": "#e9dfcd",
+        "tonalRamp": [
+          "#3b3128",
+          "#5a4c3f",
+          "#8a7e70",
+          "#b0a493",
+          "#cfc4b1",
+          "#e9dfcd",
+          "#f4ead7",
+          "#fbf6ec"
+        ]
+      },
+      "ash": {
+        "role": "neutral",
+        "displayName": "Ash",
+        "canonical": "#b0a493",
+        "tonalRamp": [
+          "#3b3128",
+          "#5a4c3f",
+          "#8a7e70",
+          "#b0a493",
+          "#cfc4b1",
+          "#e9dfcd",
+          "#f4ead7",
+          "#fbf6ec"
+        ]
+      },
+      "ash-dim": {
+        "role": "neutral",
+        "displayName": "Ash Dim",
+        "canonical": "#8a7e70",
+        "tonalRamp": [
+          "#3b3128",
+          "#5a4c3f",
+          "#8a7e70",
+          "#b0a493",
+          "#cfc4b1",
+          "#e9dfcd",
+          "#f4ead7",
+          "#fbf6ec"
+        ]
+      },
+      "ember": {
+        "role": "primary",
+        "displayName": "Ember",
+        "canonical": "#ff6a1f",
+        "tonalRamp": [
+          "#2b0f02",
+          "#5c2006",
+          "#99360c",
+          "#d44f14",
+          "#ff6a1f",
+          "#ff8a4d",
+          "#ffb28a",
+          "#ffdcc7"
+        ]
+      },
+      "flame": {
+        "role": "primary",
+        "displayName": "Flame",
+        "canonical": "#ffa646",
+        "tonalRamp": [
+          "#2e1803",
+          "#603309",
+          "#9a5410",
+          "#d87d22",
+          "#ffa646",
+          "#ffbc73",
+          "#ffd4a3",
+          "#ffecd4"
+        ]
+      },
+      "gilt": {
+        "role": "secondary",
+        "displayName": "Old Gilt",
+        "canonical": "#d2ab62",
+        "tonalRamp": [
+          "#2a2010",
+          "#57431f",
+          "#86682f",
+          "#b18a46",
+          "#d2ab62",
+          "#ddc086",
+          "#e9d6ae",
+          "#f5ebd6"
+        ]
+      },
+      "rust": {
+        "role": "secondary",
+        "displayName": "Rust",
+        "canonical": "#8c3f1c",
+        "tonalRamp": [
+          "#1f0d05",
+          "#3f1b0b",
+          "#632b12",
+          "#8c3f1c",
+          "#ad5a33",
+          "#c98160",
+          "#e0ab92",
+          "#f2d6c8"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Place, work, ledger and shelf names."
+      },
+      "inscription": {
+        "displayName": "Inscription",
+        "purpose": "Italic aliases, the intro prompt, interests, world labels."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose at a 66ch measure."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase field labels inside work facts and skill groups."
+      }
+    },
+    "shadows": [
+      {
+        "name": "heat-rise",
+        "value": "0 10px 28px -14px rgba(255,120,40,.55)",
+        "purpose": "Secondary action hover."
+      },
+      {
+        "name": "fire-hover",
+        "value": "0 12px 32px -12px rgba(255,120,40,.8)",
+        "purpose": "Primary action hover."
+      },
+      {
+        "name": "plate",
+        "value": "0 30px 60px -30px rgba(0,0,0,.9)",
+        "purpose": "Featured work images in the dark."
+      },
+      {
+        "name": "spine-lift",
+        "value": "0 18px 24px -14px rgba(255,106,31,.5)",
+        "purpose": "Selected Cosmere spine."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Reveals, lifts and hover transitions."
+      },
+      {
+        "name": "ease-slow",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Kindling sweep, page fade-in, hearth warmth."
+      },
+      {
+        "name": "kindle",
+        "value": "1700ms",
+        "purpose": "Duration of the bonfire kindling (1000ms for returning visitors)."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "rail",
+        "value": "1360px"
+      },
+      {
+        "name": "tabbar",
+        "value": "900px"
+      },
+      {
+        "name": "stack",
+        "value": "800px"
+      },
+      {
+        "name": "ledger",
+        "value": "720px"
+      },
+      {
+        "name": "shelf",
+        "value": "640px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action",
+      "kind": "button",
+      "refersTo": "action-fire",
+      "description": "The one fire-coloured action: Email me.",
+      "html": "<a class=\"ds-act ds-act--fire\" href=\"#\">Email me</a>",
+      "css": ".ds-act{display:inline-flex;align-items:center;gap:.55em;min-height:48px;padding:.65em 1.15em;border:1px solid var(--iron,#3b3128);border-radius:3px;background:rgba(20,16,12,.72);color:var(--bone,#e9dfcd);font:500 1rem/1 'Alegreya Sans',system-ui,sans-serif;text-decoration:none;transition:background-color .3s,border-color .3s,box-shadow .4s cubic-bezier(.16,1,.3,1)}.ds-act--fire{background:var(--ember,#ff6a1f);border-color:var(--ember,#ff6a1f);color:#1a0b03;font-weight:700}.ds-act--fire:hover,.ds-act--fire:focus-visible{background:var(--flame,#ffa646);border-color:var(--flame,#ffa646);box-shadow:0 12px 32px -12px rgba(255,120,40,.8)}.ds-act:focus-visible{outline:2px solid #ffa646;outline-offset:3px}"
+    },
+    {
+      "name": "Secondary Action",
+      "kind": "button",
+      "refersTo": "action",
+      "description": "WhatsApp, Résumé and other contact actions.",
+      "html": "<a class=\"ds-act2\" href=\"#\">WhatsApp</a>",
+      "css": ".ds-act2{display:inline-flex;align-items:center;min-height:48px;padding:.65em 1.15em;border:1px solid #3b3128;border-radius:3px;background:rgba(20,16,12,.72);color:#e9dfcd;font:500 1rem/1 'Alegreya Sans',system-ui,sans-serif;text-decoration:none;transition:background-color .3s,border-color .3s,box-shadow .4s}.ds-act2:hover,.ds-act2:focus-visible{border-color:#d2ab62;background:rgba(42,34,27,.9);box-shadow:0 10px 28px -14px rgba(255,120,40,.55)}.ds-act2:focus-visible{outline:2px solid #ffa646;outline-offset:3px}"
+    },
+    {
+      "name": "Text Link",
+      "kind": "custom",
+      "refersTo": "text-link",
+      "description": "Inline and outbound links.",
+      "html": "<a class=\"ds-link\" href=\"#\">dualtti.com ↗</a>",
+      "css": ".ds-link{color:#ffa646;text-decoration:underline;text-decoration-color:rgba(255,166,70,.35);text-underline-offset:.22em;font-family:'Alegreya Sans',system-ui,sans-serif}.ds-link:hover{color:#ffc27a;text-decoration-color:currentColor}.ds-link:focus-visible{outline:2px solid #ffa646;outline-offset:3px}"
+    },
+    {
+      "name": "Sigil Nav Item",
+      "kind": "nav",
+      "description": "Drawn line sigil; lit when active.",
+      "html": "<a class=\"ds-sigil\" href=\"#\" aria-current=\"location\"><svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"5\" cy=\"19\" r=\"1.8\"/><circle cx=\"12\" cy=\"12\" r=\"1.8\"/><circle cx=\"19\" cy=\"5\" r=\"1.8\"/></svg><span>Path</span></a>",
+      "css": ".ds-sigil{display:inline-flex;align-items:center;gap:12px;padding:8px;color:#8a7e70;text-decoration:none;font:400 1.05rem 'IM Fell English SC',Georgia,serif;transition:color .35s}.ds-sigil svg{transition:filter .5s,transform .5s}.ds-sigil:hover,.ds-sigil:focus-visible{color:#e9dfcd}.ds-sigil:hover svg,.ds-sigil:focus-visible svg{color:#ffa646;filter:drop-shadow(0 4px 10px rgba(255,120,40,.55));transform:translateY(-1px)}.ds-sigil[aria-current] svg{color:#ff6a1f;filter:drop-shadow(0 3px 8px rgba(255,106,31,.6))}"
+    },
+    {
+      "name": "Ledger Row",
+      "kind": "card",
+      "description": "A record with date, linked title, summary and source.",
+      "html": "<div class=\"ds-row\"><span class=\"ds-date\">16 Jun 2026</span><div><h3 lang=\"es\"><a href=\"#\">Estudiante paraguayo ingresa a firma líder de videojuegos en Taiwán</a></h3><p>Diario HOY reports the IGS internship.</p></div><span class=\"ds-src\">Diario HOY ↗</span></div>",
+      "css": ".ds-row{display:grid;grid-template-columns:8rem 1fr auto;gap:8px 28px;align-items:baseline;padding:22px 0;border-top:1px solid #2a221b;border-bottom:1px solid #2a221b;background:#0c0a08;color:#e9dfcd;font-family:'Alegreya Sans',system-ui,sans-serif}.ds-date{color:#8a7e70;font-variant-numeric:tabular-nums;font-size:.95rem}.ds-row h3{margin:0;font:400 1.5rem/1.15 'IM Fell English SC',Georgia,serif}.ds-row h3 a{color:inherit;text-decoration:none}.ds-row:hover h3{color:#ffa646}.ds-row p{margin:6px 0 0;color:#b0a493}.ds-src{color:#d2ab62;font-size:.95rem}"
+    },
+    {
+      "name": "Cosmere Spine",
+      "kind": "custom",
+      "refersTo": "spine-novel",
+      "description": "A book on the reading shelf; the latest burns brighter.",
+      "html": "<button class=\"ds-spine\" aria-pressed=\"true\"><i></i><span>Wind and Truth</span></button>",
+      "css": ".ds-spine{position:relative;width:50px;height:236px;margin-top:30px;border:0;border-radius:2px 2px 1px 1px;background:linear-gradient(90deg,rgba(0,0,0,.35),transparent 18%,transparent 80%,rgba(0,0,0,.4)),linear-gradient(#27313c,#18202a);color:#d8c08a;cursor:pointer;filter:brightness(.82);transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s,filter .45s}.ds-spine span{display:block;writing-mode:vertical-rl;transform:rotate(180deg);font:400 .98rem/1 'IM Fell English SC',Georgia,serif;margin:26px auto 0}.ds-spine i{position:absolute;top:-26px;left:50%;width:12px;height:18px;margin-left:-6px;border-radius:50% 50% 45% 45%/62% 62% 38% 38%;background:radial-gradient(ellipse at 50% 75%,#fff2d0 0,#ffa646 35%,#ff6a1f 65%,rgba(255,106,31,0) 72%)}.ds-spine:hover,.ds-spine:focus-visible,.ds-spine[aria-pressed=true]{transform:translateY(-10px);filter:brightness(1.05);box-shadow:0 18px 24px -14px rgba(255,106,31,.5)}"
+    },
+    {
+      "name": "Journal Shelf",
+      "kind": "card",
+      "description": "A journal category with its state.",
+      "html": "<div class=\"ds-shelf\"><h3>Notes</h3><p>Technical write-ups: things I learned the hard way.</p><em>First entry coming</em></div>",
+      "css": ".ds-shelf{display:grid;gap:6px;padding:24px 24px 22px 0;border-bottom:1px solid #2a221b;background:#0c0a08;max-width:320px}.ds-shelf h3{margin:0;font:400 1.6rem 'IM Fell English SC',Georgia,serif;color:#b0a493}.ds-shelf p{margin:0;color:#8a7e70;font-family:'Alegreya Sans',system-ui,sans-serif}.ds-shelf em{font:italic .95rem 'IM Fell English',Georgia,serif;color:#8a7e70}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Kindled Path",
+    "overview": "A dark world lit by one living fire. The page opens in near-total darkness: a few embers on charred logs that react to the cursor, which is itself a small live coal. When the visitor kindles the bonfire, a real rendered fire (Three.js WebGPU compute particles, WebGL2 fallback, a 2D canvas underneath) rises and settles at the foot of the hero. From then on it is the page's only light source. Each section is a place that light reaches as you travel: the path of bonfires, the works, the journal, the Cosmere shelf, and the final fire where every contact action waits.\n\nThe register is medieval fantasy held to professional restraint. The display voice is an old letterpress face set like an inscription. The ground is warm soot, the fire runs from ember through amber to old gilt, and smoke is the only gradient. Nothing is outlined in glow: light falls on things from below, as a fire would light them. Recruiters must still read who Choco is, what he does now and how to reach him within one viewport, so the fantasy is never allowed to cost legibility.",
+    "keyCharacteristics": [
+      "A warm soot ground (never blue-black), with grain and faint smoke in the air below the hero.",
+      "One fire as the single light source, a fixed canvas behind content, with a hearth glow at the viewport foot whose strength follows the section.",
+      "IM Fell English SC inscriptions over a humanist sans (Alegreya Sans) body.",
+      "Rasters are lit from below and dimmed so no image outshines the fire.",
+      "Drawn line sigils (24px grid, 1.5 stroke) for navigation; no icon fonts, no emoji, no brand glyphs.",
+      "Every interaction has a tap or keyboard equivalent, and reduced motion gets a still, lit page."
+    ],
+    "rules": [
+      {
+        "name": "The One Light Rule",
+        "body": "The fire is the only light source. Ember and flame mark what is alive or actionable; they never decorate a static surface.",
+        "section": "colors"
+      },
+      {
+        "name": "The Warm Dark Rule",
+        "body": "Darks carry red-brown warmth. A cool or blue-black neutral breaks the world.",
+        "section": "colors"
+      },
+      {
+        "name": "The Inscription Rule",
+        "body": "Display type is IM Fell English SC at weight 400. Hierarchy comes from size and colour, never from bolding the display face or adding a third family.",
+        "section": "typography"
+      },
+      {
+        "name": "The No-Eyebrow Rule",
+        "body": "Nothing small sits above a heading. Dates, kinds and meta follow the heading they describe.",
+        "section": "typography"
+      },
+      {
+        "name": "The Light-From-Below Rule",
+        "body": "Every glow has an offset and comes from beneath, the way a fire lights a room. Zero-offset halos and glowing outlines are not part of this world.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep Soot (#0c0a08) as the ground and the fire as the single light source.",
+      "Do light every raster from below and dim it until it sits under the fire in brightness.",
+      "Do set headings in IM Fell English SC at 400 and let size and Bone/Ash/Gilt carry rank.",
+      "Do give every hover a focus and tap equivalent, and every animation a reduced-motion still.",
+      "Do keep the contact rail one action away: Email, WhatsApp and Résumé in the hero and at the close.",
+      "Do edit content only in `content/*.ts`; the page reads from there."
+    ],
+    "donts": [
+      "Don't introduce cool or blue-black neutrals, or a light section.",
+      "Don't outline anything in glow or use zero-offset halos; light comes from below.",
+      "Don't put an eyebrow, kicker or date above a heading.",
+      "Don't use icon fonts, emoji or brand glyphs; draw sigils on the 24px, 1.5-stroke grid, and name brands in words.",
+      "Don't let fire particles or sparks pass behind live text without the soot scrim.",
+      "Don't use FromSoftware assets or their coiled-sword bonfire; the bonfire here is drawn logs and a rendered fire."
+    ]
+  }
+}

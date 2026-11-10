@@ -1,0 +1,10 @@
+.claude/
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/review/
+.impeccable/config.local.json

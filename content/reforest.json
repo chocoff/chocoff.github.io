@@ -1,0 +1,359 @@
+[
+ {
+  "id": "introduction",
+  "blocks": [
+   {
+    "t": "h1",
+    "text": "Forestal Monitoring & Carbon Sequestration"
+   },
+   {
+    "t": "h2",
+    "text": "Introduction"
+   },
+   {
+    "t": "p",
+    "text": "The ongoing deforestation crisis in Paraguay is primarily driven by agricultural expansion and wildfires, leading to a rise in carbon emission levels, causing loss of biodiversity and an increase of the overall temperature in the region. Vital ecosystems are facing alarming rates of deforestation, the loss of which damages wildlife and reduces the region's capacity to capture and store carbon dioxide, further aggravating the global climate crisis."
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/chacodeforestacion.webp",
+    "file": "chacodeforestacion.jpg"
+   },
+   {
+    "t": "p",
+    "text": "Previous research made in deforestation monitoring has employed satellite images, geographic information and more to track changes in the forest over time. However, the use of AI and machine learning is a new set of opportunities for more accurate and dynamic tracking of the changes in the environment. This project aims to address the challenges of monitoring deforestation and carbon sequestration potential by developing an artificial intelligence model that is capable of following these issues in order to obtain important data about the damaged zones, enabling the identification of areas where reforestation efforts would yield the maximum carbon capture benefit."
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/satelite1.webp",
+    "file": "satelite1.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/satelite2.webp",
+    "file": "satelite2.jpg"
+   },
+   {
+    "t": "p",
+    "text": "The effects of deforestation are far-reaching. It leads to the loss of biodiversity, with species becoming extinct and ecosystems being disrupted. Additionally, deforestation contributes significantly to climate change by releasing large amounts of carbon stored in trees into the atmosphere."
+   },
+   {
+    "t": "p",
+    "text": "This project intends to provide an accurate deforestation detection system, a predictive model for wildfire risk and a map of carbon sequestration potential across the region. Aiming to contribute a valuable tool to make data-driven decisions for where to implement reforestation programs. Moreover, the project aims to raise awareness of deforestation and wildfire issues in Paraguay. On top of that, it is an effective way to contribute to the development of AI technologies specifically designed to address environmental challenges in Paraguay. The integration of this model is expected to significantly improve forest conservation efforts that will lead to a substantial reduction in CO2 emissions in Paraguay. Methodology This project makes use of artificial intelligence (AI) and machine learning (ML) to enhance deforestation detection and support reforestation in the Chaco region. By integrating high-resolution satellite imagery from Sentinel-2 and applying advanced techniques such as Convolutional Neural Networks (CNNs) for image analysis and Recurrent Neural Networks (RNNs) for temporal forecasting, the project creates a powerful system for monitoring vegetation changes and predicting deforestation trends."
+   },
+   {
+    "t": "p",
+    "text": "Additionally, the project focuses on identifying optimal locations for reforestation based on carbon sequestration potential, enabling policymakers to prioritize the most impactful areas for intervention. The use of AI improves the accuracy of monitoring systems and provides actionable insights, offering a scalable, data-driven approach to combat deforestation."
+   },
+   {
+    "t": "p",
+    "text": "This initiative aims to preserve Chaco’s ecosystems, reduce carbon emissions, and support informed decision-making in conservation, contributing to a sustainable balance between development and ecosystem preservation in fragile regions."
+   }
+  ]
+ },
+ {
+  "id": "phase-1",
+  "blocks": [
+   {
+    "t": "h1",
+    "text": "Phase 1: Basic Image Prediction"
+   },
+   {
+    "t": "p",
+    "text": "In the Phase 1 of the AI, works with Convolutional Neural Network (CNN) model in order to classify images whether they contain trees or not. The images are preprocessed, normalized, and resized into a consistent format suitable for CNNs. The model is trained using the processed dataset and validated on a small portion of the data."
+   },
+   {
+    "t": "h3",
+    "text": "Performance Graphics"
+   },
+   {
+    "t": "h3",
+    "text": "Accuracy vs Iterations"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase1-graphic-01.webp",
+    "file": "Phase1_Graphic_01.png"
+   },
+   {
+    "t": "h3",
+    "text": "Epoch Loss"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase1-graphic-02.webp",
+    "file": "Phase1_Graphic_02.png"
+   },
+   {
+    "t": "h3",
+    "text": "Epoch Learning Rate"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase1-graphic-03.webp",
+    "file": "Phase1_Graphic_03.png"
+   },
+   {
+    "t": "h3",
+    "text": "Loss vs Iterations"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase1-graphic-04.webp",
+    "file": "Phase1_Graphic_04.png"
+   },
+   {
+    "t": "h3",
+    "text": "Epoch Accuracy"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase1-graphic-05.webp",
+    "file": "Phase1_Graphic_05.png"
+   },
+   {
+    "t": "h3",
+    "text": "Training Method"
+   },
+   {
+    "t": "p",
+    "text": "Down here it is the code for Training and the resultes obtained."
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase1trainingcode.webp",
+    "file": "phase1TrainingCode.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase1trainingresults.webp",
+    "file": "phase1TrainingResults.jpg"
+   }
+  ]
+ },
+ {
+  "id": "phase-2",
+  "blocks": [
+   {
+    "t": "h1",
+    "text": "Phase 2: NDVI & CNN"
+   },
+   {
+    "t": "p",
+    "text": "In Phase 2 of the AI project, the system leverages advanced machine learning techniques to predict deforestation and vegetation changes by incorporating both historical image data and NDVI (Normalized Difference Vegetation Index) analysis. The model uses Convolutional Neural Networks (CNNs) to process pairs of satellite images captured at different times, extracting relevant features and detecting changes in vegetation density. The NDVI, which highlights vegetation health and deforestation through color coding, is integrated into the images as additional channels to enhance model accuracy. By using both historical data and real-time NDVI analysis, the system is capable of making precise predictions about deforestation trends in specific zones, providing valuable insights for monitoring and decision-making in environmental conservation efforts."
+   },
+   {
+    "t": "h3",
+    "text": "Image Prediction"
+   },
+   {
+    "t": "p",
+    "text": "The image on the left shows the current state of the field, while the image on the right represents the prediction made by the AI. The changes are based on the number of trees present at the time the photo was taken."
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2img1code.webp",
+    "file": "phase2Img1Code.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2img1.webp",
+    "file": "phase2Img1.jpg"
+   },
+   {
+    "t": "h3",
+    "text": "NDVI"
+   },
+   {
+    "t": "p",
+    "text": "The NDVI images represent the difference in vegetation health between the two photos. NDVI, or Normalized Difference Vegetation Index, highlights areas with healthy vegetation in green and areas with less vegetation, such as deforested regions, in red or brown. The NDVI image on the left corresponds to the current state of the field, while the NDVI image on the right shows the predicted changes in vegetation based on AI analysis, where differences indicate areas of deforestation or changes in vegetation density."
+   },
+   {
+    "t": "p",
+    "text": "An important observation is that the dataset used to train this model only contained RGB images (with three color channels). In this case, the green channel was repurposed as a placeholder for the infrared (near-infrared) channel. This is important because the NDVI relies on the relationship between the red and near-infrared channels to assess vegetation density in a given area. The NDVI is based on how different surfaces (vegetated and non-vegetated) reflect light, with vegetation strongly reflecting near-infrared light while absorbing red light. This explains why the images have very little green in them, as the green channel is not being used to as it should be. Instead, it is being used to represent the infrared channel, which leads to an unnatural color balance in the image and affects the way the vegetation is detected."
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2img2code.webp",
+    "file": "phase2Img2Code.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2img2.webp",
+    "file": "phase2Img2.jpg"
+   },
+   {
+    "t": "h3",
+    "text": "Change Detection"
+   },
+   {
+    "t": "p",
+    "text": "In this image, the major zone changes are shown in white."
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2img3code.webp",
+    "file": "phase2Img3Code.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2img3.webp",
+    "file": "phase2Img3.jpg"
+   },
+   {
+    "t": "h3",
+    "text": "Prediction Vizualitation"
+   },
+   {
+    "t": "p",
+    "text": "The images at the right are the prediction of deforestation. The most it approaches 0, the least vegetation it is in the zone."
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imag4-1.webp",
+    "file": "phase2Imag4-1.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imag4-2.webp",
+    "file": "phase2Imag4-2.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imag4-3.webp",
+    "file": "phase2Imag4-3.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imag4-4.webp",
+    "file": "phase2Imag4-4.jpg"
+   },
+   {
+    "t": "h3",
+    "text": "User Prompt"
+   },
+   {
+    "t": "p",
+    "text": "The user provides the path to the image."
+   },
+   {
+    "t": "p",
+    "text": "The most approaches to 1, the most vegetation in the area, 0 is no vegetation and -1 are bodies of water or urbanization."
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imagcode5-1.webp",
+    "file": "phase2ImagCode5-1.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imagcode5-2.webp",
+    "file": "phase2ImagCode5-2.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imagcode5-3.webp",
+    "file": "phase2ImagCode5-3.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imagcode5-4.webp",
+    "file": "phase2ImagCode5-4.jpg"
+   },
+   {
+    "t": "h3",
+    "text": "Rural Area"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imag5-1.webp",
+    "file": "phase2Imag5-1.jpg"
+   },
+   {
+    "t": "h3",
+    "text": "Urban Area"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imag5-2.webp",
+    "file": "phase2Imag5-2.jpg"
+   },
+   {
+    "t": "h3",
+    "text": "Water Area"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2imag5-3.webp",
+    "file": "phase2Imag5-3.jpg"
+   },
+   {
+    "t": "h3",
+    "text": "Performance Graphics"
+   },
+   {
+    "t": "h3",
+    "text": "Accuracy vs Iterations"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2-graphic-02.webp",
+    "file": "Phase2_Graphic_02.png"
+   },
+   {
+    "t": "h3",
+    "text": "Epoch Loss"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2-graphic-03.webp",
+    "file": "Phase2_Graphic_03.png"
+   },
+   {
+    "t": "h3",
+    "text": "Epoch Learning Rate"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2-graphic-04.webp",
+    "file": "Phase2_Graphic_04.png"
+   },
+   {
+    "t": "h3",
+    "text": "Loss vs Iterations"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2-graphic-01.webp",
+    "file": "Phase2_graphic_01.png"
+   },
+   {
+    "t": "h3",
+    "text": "Epoch Accuracy"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2-graphic-05.webp",
+    "file": "Phase2_graphic_05.png"
+   },
+   {
+    "t": "h3",
+    "text": "Training Method"
+   },
+   {
+    "t": "p",
+    "text": "Down here it is the code for Training and the resultes obtained."
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2trainingcode.webp",
+    "file": "phase2TrainingCode.jpg"
+   },
+   {
+    "t": "img",
+    "src": "/media/reforest/phase2trainingresults.webp",
+    "file": "phase2TrainingResults.jpg"
+   }
+  ]
+ }
+]
