@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Currently static HTML/CSS/JS (`index.html`, `assets/`, plus `reforest-ai/`), hosted on GitHub Pages. Confirmed for the redesign (2026-11-09): Next.js (App Router, TypeScript) with static export, deployed to GitHub Pages. The owner prefers lightweight output (GUIDE.md §10), so client JS stays minimal and every dependency needs a reason. The bonfire renderer is hybrid: a tiny canvas draws the dormant embers instantly, and Three.js WebGPU (TSL, with automatic WebGL2 fallback) loads lazily for kindling and fire. 21st.dev components may be adapted where they help. The full redesign brief is in `GUIDE.md`.
+Currently static HTML/CSS/JS (`index.html`, `assets/`, plus `reforest-ai/`), hosted on GitHub Pages. Confirmed for the redesign (2026-11-09): Next.js (App Router, TypeScript) with static export, deployed to GitHub Pages. The owner prefers lightweight output (GUIDE.md §10), so client JS stays minimal and every dependency needs a reason. The bonfire renderer is hybrid: a tiny canvas draws the dormant embers instantly, and Three.js WebGPU (TSL, with automatic WebGL2 fallback) loads lazily for kindling and fire. 21st.dev components may be adapted where they help. The site is bilingual (English at `/`, Spanish at `/es/`); every content string in `content/*.ts` carries both. The home page focuses on hero, path and projects; the journal/records and the Cosmere reading path are side pages (`/journal/`, `/reading/`) reached from two quiet links (owner decision, 2026-11-10). The bonfire is a 3D object: `public/models/bonfire.glb` when present (the owner chose the CC BY 4.0 Sketchfab model "Dark Souls - Bonfire" by UselessViking, credited in the footer), otherwise a built-in model. The full redesign brief is in `GUIDE.md`.
 
 ## Users
 
@@ -39,7 +39,7 @@ Visitors arrive from resumes, applications, and links, and scan for projects and
 
 ## Brand Commitments
 
-Name shown as "Fernando Rojas | Choco"; the logo/wordmark is "Choco." Voice is first-person, direct, and modest. Interests (souls-like games, fantasy books such as Mistborn, graphics, low-level programming) are part of the persona.
+Name shown as "Fernando Rojas | Choco"; the logo/wordmark is "Choco." Voice is first-person, direct, and modest. Type should read professional, not medieval (owner feedback, 2026-11-10). Interests (souls-like games, fantasy books such as Mistborn, graphics, low-level programming) are part of the persona.
 
 ## Evidence on Hand
 

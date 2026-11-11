@@ -19,21 +19,83 @@ let litAt = 0;
 /** Set by the GPU renderer once its first frame is on screen. */
 export const gpu = { ready: false, failed: false };
 
-/** Vertical position of the fire's base as a fraction of viewport height.
- *  Centered while dormant, then it settles low so the name can rise above it. */
-export const BASE_DORMANT = 0.56;
-export const BASE_LIT = 0.9;
-/** On narrow screens the bottom tab bar takes the last ~64px. */
-const baseLit = () => (typeof window !== "undefined" && window.innerWidth < 900 ? 0.8 : BASE_LIT);
-const SETTLE_MS = 1400;
+/**
+ * Where the bonfire stands on screen, shared by the 2D and GPU renderers.
+ * x, y: the fire's base as fractions of the viewport. scale: size multiplier.
+ * rot: rotation of the 3D model around its vertical axis, in radians.
+ */
+export type Stage = { x: number; y: number; scale: number; rot: number; visible: boolean };
 
-export function fireBaseFrac(now = performance.now()): number {
-  if (phase !== "lit") return BASE_DORMANT;
-  if (litAt === 0) return baseLit();
-  const t = Math.min(1, (now - litAt) / SETTLE_MS);
-  const e = 1 - Math.pow(1 - t, 4);
-  return BASE_DORMANT + (baseLit() - BASE_DORMANT) * e;
+/** Scroll progress values, written by FireStage on scroll. All 0..1. */
+export const scroll = {
+  /** About section rising into view. */
+  aboutIn: 0,
+  /** Progress through the pinned About section. */
+  aboutPin: 0,
+  /** About section leaving. */
+  aboutOut: 0,
+  /** Contact section arriving. */
+  rest: 0,
+};
+
+const BASE_DORMANT = 0.58;
+const SETTLE_MS = 1400;
+const wide = () => typeof window !== "undefined" && window.innerWidth >= 900;
+/** On narrow screens the bottom tab bar takes the last ~64px. */
+const baseLit = () => (wide() ? 0.94 : 0.82);
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+const ease = (t: number) => t * t * (3 - 2 * t);
+
+const out: Stage = { x: 0.5, y: BASE_DORMANT, scale: 1, rot: 0, visible: true };
+
+export function stage(now = performance.now()): Stage {
+  out.x = 0.5;
+  out.scale = 1;
+  out.visible = true;
+  // A slow idle turn so the model is never completely still.
+  const idle = now * 0.00006;
+
+  if (phase !== "lit") {
+    out.y = BASE_DORMANT;
+    out.rot = idle;
+    return out;
+  }
+
+  let y = baseLit();
+  if (litAt !== 0) {
+    const t = Math.min(1, (now - litAt) / SETTLE_MS);
+    y = lerp(BASE_DORMANT, baseLit(), 1 - Math.pow(1 - t, 4));
+  }
+
+  const aIn = ease(scroll.aboutIn);
+  const aOut = ease(scroll.aboutOut);
+  const rest = ease(scroll.rest);
+
+  if (wide()) {
+    // Hero → About: the fire walks to the right and comes closer, turning as it goes.
+    out.x = lerp(0.5, 0.74, aIn);
+    out.scale = lerp(1, 1.55, aIn);
+    y = lerp(y, 0.8, aIn) + aOut * 0.9;
+  } else {
+    // Narrow screens: a smaller fire that stays behind with the hero.
+    out.scale = 0.72;
+    y += scroll.aboutIn * 0.9;
+  }
+  out.rot = idle + aIn * 1.1 + scroll.aboutPin * Math.PI * 2 + aOut * 0.8;
+
+  // Contact: it rises again at the centre for the close.
+  if (rest > 0) {
+    out.x = 0.5;
+    out.scale = wide() ? 1.1 : 0.8;
+    y = lerp(1.6, wide() ? 0.9 : 0.82, rest);
+    out.rot = idle + rest * Math.PI;
+  }
+
+  out.y = y;
+  out.visible = y < 1.45;
+  return out;
 }
+
 const listeners = new Set<Listener>();
 
 /** Pointer in CSS pixels, viewport space. `active` is false until it moves. */

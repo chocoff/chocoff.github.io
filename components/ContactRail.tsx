@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { contact } from "@/content/site";
+import { ui, type Lang } from "@/content/i18n";
 import { ArrowOutIcon, CheckIcon, ChatIcon, CopyIcon, DownloadIcon, MailIcon } from "./icons";
 
 /** Every way to reach Choco, one action each. Used in the hero and at the close. */
-export default function ContactRail({ size = "default" }: { size?: "default" | "large" }) {
+export default function ContactRail({ lang, size = "default" }: { lang: Lang; size?: "default" | "large" }) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
@@ -24,9 +25,9 @@ export default function ContactRail({ size = "default" }: { size?: "default" | "
         <span className="contact-email">
           <a className="action action--fire" href={`mailto:${contact.email}`}>
             <MailIcon />
-            <span>Email me</span>
+            <span>{ui.emailMe[lang]}</span>
           </a>
-          <button type="button" className="action action--icon" onClick={copy} aria-label={`Copy ${contact.email}`}>
+          <button type="button" className="action action--icon" onClick={copy} aria-label={`${ui.copyEmail[lang]} ${contact.email}`}>
             {copied ? <CheckIcon /> : <CopyIcon />}
           </button>
         </span>
@@ -36,7 +37,7 @@ export default function ContactRail({ size = "default" }: { size?: "default" | "
         </a>
         <a className="action" href={contact.resume} download="Fernando-Rojas-Resume.pdf">
           <DownloadIcon />
-          <span>Résumé</span>
+          <span>{ui.resume[lang]}</span>
         </a>
       </div>
       <div className="contact-secondary">
@@ -47,7 +48,7 @@ export default function ContactRail({ size = "default" }: { size?: "default" | "
           GitHub <ArrowOutIcon />
         </a>
         <span className="contact-address" aria-live="polite">
-          {copied ? "Address copied" : contact.email}
+          {copied ? ui.copied[lang] : contact.email}
         </span>
       </div>
     </div>

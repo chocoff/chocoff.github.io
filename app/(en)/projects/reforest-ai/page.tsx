@@ -36,7 +36,7 @@ export default function ReforestPage() {
   const title = sections[0]?.blocks.find((b) => b.t === "h1")?.text ?? "Reforest AI";
 
   return (
-    <main className="case">
+    <main className="case subpage">
       <a className="text-link case-back" href="/#works">
         ← Back to the works
       </a>

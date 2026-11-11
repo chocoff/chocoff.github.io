@@ -1,14 +1,16 @@
+import type { L } from "./i18n";
+
 export type Stop = {
   id: string;
   kind: "study" | "work";
   place: string;
   placeLong?: string;
-  role: string;
-  start: string; // display form, e.g. "Mar 2023"
-  end: string | null; // null = present
-  location?: string;
-  summary: string;
-  notes?: readonly string[];
+  role: L;
+  /** [year, month] — month is 1-12. `end: null` means present. */
+  start: [number, number];
+  end: [number, number] | null;
+  location?: L;
+  summary: L;
   url: string;
   logo: { src: string; width: number; height: number; wide?: boolean };
 };
@@ -20,12 +22,14 @@ export const journey: readonly Stop[] = [
     kind: "study",
     place: "UPTP",
     placeLong: "Universidad Politécnica Taiwán-Paraguay",
-    role: "B.S. Computer Science and Information Engineering",
-    start: "Mar 2023",
-    end: "Dec 2024",
-    location: "Paraguay",
-    summary:
-      "Started the degree in Paraguay. Coursework across UPTP and NTUST: data structures, OOP, AI/ML, operating systems, networks.",
+    role: { en: "B.S. Computer Science and Information Engineering", es: "Lic. en Ciencias de la Computación e Ingeniería Informática" },
+    start: [2023, 3],
+    end: [2024, 12],
+    location: { en: "Paraguay", es: "Paraguay" },
+    summary: {
+      en: "Started the degree in Paraguay. Coursework across UPTP and NTUST: data structures, OOP, AI/ML, operating systems, networks.",
+      es: "Empecé la carrera en Paraguay. Materias entre la UPTP y NTUST: estructuras de datos, POO, IA/ML, sistemas operativos, redes.",
+    },
     url: "https://www.uptp.edu.py/",
     logo: { src: "/media/logos/uptp.png", width: 257, height: 75, wide: true },
   },
@@ -33,11 +37,13 @@ export const journey: readonly Stop[] = [
     id: "cast",
     kind: "work",
     place: "Cast S.A.",
-    role: "Software Engineering Intern",
-    start: "Dec 2024",
-    end: "Feb 2025",
-    summary:
-      "Developed RASA-based AI conversational agents to automate client support workflows.",
+    role: { en: "Software Engineering Intern", es: "Pasante de Ingeniería de Software" },
+    start: [2024, 12],
+    end: [2025, 2],
+    summary: {
+      en: "Developed RASA-based AI conversational agents to automate client support workflows.",
+      es: "Desarrollé agentes conversacionales de IA con RASA para automatizar flujos de atención al cliente.",
+    },
     url: "https://cast.com.py/",
     logo: { src: "/media/logos/cast.svg", width: 64, height: 64 },
   },
@@ -46,12 +52,14 @@ export const journey: readonly Stop[] = [
     kind: "study",
     place: "NTUST",
     placeLong: "National Taiwan University of Science and Technology (Taiwan Tech)",
-    role: "Exchange program, Computer Science and Information Engineering",
-    start: "Feb 2025",
-    end: "Jun 2026",
-    location: "Taipei, Taiwan",
-    summary:
-      "Continued the degree in Taipei through the UPTP and Taiwan Tech program.",
+    role: { en: "Exchange program, Computer Science and Information Engineering", es: "Programa de intercambio, Ciencias de la Computación e Ingeniería Informática" },
+    start: [2025, 2],
+    end: [2026, 6],
+    location: { en: "Taipei, Taiwan", es: "Taipéi, Taiwán" },
+    summary: {
+      en: "Continued the degree in Taipei through the UPTP and Taiwan Tech program.",
+      es: "Continué la carrera en Taipéi mediante el programa entre la UPTP y Taiwan Tech.",
+    },
     url: "https://www.ntust.edu.tw/",
     logo: { src: "/media/logos/ntust.png", width: 415, height: 80, wide: true },
   },
@@ -59,11 +67,13 @@ export const journey: readonly Stop[] = [
     id: "reekon",
     kind: "work",
     place: "REEKON",
-    role: "AI Engineering Intern",
-    start: "May 2026",
-    end: "Jun 2026",
-    summary:
-      "Refactored and implemented a new Retrieval-Augmented Generation pipeline with diverse document chunking strategies and Docling.",
+    role: { en: "AI Engineering Intern", es: "Pasante de Ingeniería de IA" },
+    start: [2026, 5],
+    end: [2026, 6],
+    summary: {
+      en: "Refactored and implemented a new Retrieval-Augmented Generation pipeline with diverse document chunking strategies and Docling.",
+      es: "Refactoricé e implementé un nuevo pipeline de Retrieval-Augmented Generation con distintas estrategias de segmentación de documentos y Docling.",
+    },
     url: "https://reekon.org/",
     logo: { src: "/media/logos/reekon.png", width: 152, height: 32, wide: true },
   },
@@ -71,12 +81,14 @@ export const journey: readonly Stop[] = [
     id: "igs",
     kind: "work",
     place: "International Games System",
-    role: "Software Engineering Intern, Arcade Department",
-    start: "Jun 2026",
-    end: "Aug 2026",
-    location: "New Taipei, Taiwan",
-    summary:
-      "Developed and implemented the third stage of an arcade IP, including its boss fight and weather mechanics, and presented the results on the arcade machines themselves.",
+    role: { en: "Software Engineering Intern, Arcade Department", es: "Pasante de Ingeniería de Software, Departamento de Arcade" },
+    start: [2026, 6],
+    end: [2026, 8],
+    location: { en: "New Taipei, Taiwan", es: "Nuevo Taipéi, Taiwán" },
+    summary: {
+      en: "Developed and implemented the third stage of an arcade IP, including its boss fight and weather mechanics, and presented the results on the arcade machines themselves.",
+      es: "Desarrollé e implementé la tercera etapa de una IP de arcade, con su pelea de jefe y sus mecánicas de clima, y presenté los resultados en las propias máquinas.",
+    },
     url: "https://www.igs.com.tw/en/",
     logo: { src: "/media/logos/igs.png", width: 140, height: 100 },
   },
@@ -84,13 +96,22 @@ export const journey: readonly Stop[] = [
     id: "dualtti",
     kind: "work",
     place: "Dualtti",
-    role: "Software Developer & Client Management",
-    start: "Sep 2026",
+    role: { en: "Software Developer & Client Management", es: "Desarrollador de Software y Gestión de Clientes" },
+    start: [2026, 9],
     end: null,
-    location: "Paraguay",
-    summary:
-      "Building software for a Paraguayan Meta Ads agency, and managing client accounts and their campaigns directly.",
+    location: { en: "Paraguay", es: "Paraguay" },
+    summary: {
+      en: "Building software for a Paraguayan Meta Ads agency, and managing client accounts and their campaigns directly.",
+      es: "Desarrollo software para una agencia paraguaya de Meta Ads y gestiono directamente las cuentas de clientes y sus campañas.",
+    },
     url: "https://dualtti.com/",
     logo: { src: "/media/logos/dualtti.png", width: 256, height: 256 },
   },
 ];
+
+const MONTHS: Record<"en" | "es", readonly string[]> = {
+  en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  es: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+};
+export const monthYear = ([y, m]: [number, number], lang: "en" | "es") => `${MONTHS[lang][m - 1]} ${y}`;
+export const monthName = (m: number, lang: "en" | "es") => MONTHS[lang][m - 1];

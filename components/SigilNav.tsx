@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect, useState, type ComponentType, type SVGProps } from "react";
-import { SigilAnvil, SigilBook, SigilFlame, SigilLantern, SigilPath, SigilSeal } from "./icons";
+import { SigilAnvil, SigilBook, SigilFlame, SigilLantern, SigilPath } from "./icons";
 
-type Item = { id: string; label: string; preview: string; Icon: ComponentType<SVGProps<SVGSVGElement>>; warmth: number };
+export type NavItem = { id: string; label: string; preview: string; warmth: number };
 
-export default function SigilNav({ items }: { items: readonly Omit<Item, "Icon">[] }) {
-  const icons: Record<string, Item["Icon"]> = {
-    about: SigilFlame,
-    path: SigilPath,
-    works: SigilAnvil,
-    records: SigilSeal,
-    cosmere: SigilBook,
-    contact: SigilLantern,
-  };
+const icons: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
+  about: SigilFlame,
+  path: SigilPath,
+  works: SigilAnvil,
+  more: SigilBook,
+  contact: SigilLantern,
+};
+
+export default function SigilNav({ items, label, homeLabel }: { items: readonly NavItem[]; label: string; homeLabel: string }) {
   const [active, setActive] = useState<string>("");
 
   useEffect(() => {
@@ -52,22 +52,16 @@ export default function SigilNav({ items }: { items: readonly Omit<Item, "Icon">
   }, [items]);
 
   return (
-    <nav className="sigils" aria-label="Sections">
-      <a className="sigils-home" href="#top" aria-label="Back to the top">
+    <nav className="sigils" aria-label={label}>
+      <a className="sigils-home" href="#top" aria-label={homeLabel}>
         Choco<span aria-hidden="true">.</span>
       </a>
       <ol>
         {items.map((item) => {
           const Icon = icons[item.id];
-          const isActive = active === item.id;
           return (
             <li key={item.id}>
-              <a
-                href={`#${item.id}`}
-                className="sigil"
-                aria-current={isActive ? "location" : undefined}
-                aria-describedby={`peek-${item.id}`}
-              >
+              <a href={`#${item.id}`} className="sigil" aria-current={active === item.id ? "location" : undefined} aria-describedby={`peek-${item.id}`}>
                 <Icon />
                 <span className="sigil-label">{item.label}</span>
               </a>

@@ -1,5 +1,6 @@
 /**
- * The bonfire, on the GPU. Three.js WebGPU + TSL compute particles.
+ * The bonfire, on the GPU: a 3D model lit by the fire, plus Three.js WebGPU
+ * TSL compute particles for the flames and sparks.
  * WebGPURenderer falls back to WebGL2 on its own where WebGPU is missing.
  * Loaded lazily after the first paint; the 2D ember field covers until it's ready.
  */
@@ -8,14 +9,15 @@ import {
   Fn, If, uniform, float, vec3, vec4, instancedArray, instanceIndex,
   hash, sin, mix, smoothstep, uv, select, varying, attribute,
 } from "three/tsl";
-import { fireBaseFrac, getPhase, gpu, kindleProgress, pointer } from "./flame";
+import { getPhase, gpu, kindleProgress, pointer, stage, subscribe } from "./flame";
+import { loadBonfire } from "./bonfire-model";
 
 const FLAMES = 2600;
 const SPARKS = 260;
 const COUNT = FLAMES + SPARKS;
 const SOOT = "#0c0a08";
 
-export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> {
+export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boolean }): Promise<() => void> {
   // Opaque, painted in the page's own soot. A transparent canvas with additive
   // glow leaves colour > alpha, which WebGPU compositing treats as undefined.
   const renderer = new THREE.WebGPURenderer({ canvas, antialias: false, alpha: false });
@@ -25,12 +27,13 @@ export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> 
   let w = window.innerWidth;
   let h = window.innerHeight;
   const scene = new THREE.Scene();
-  const camera = new THREE.OrthographicCamera(-w / 2, w / 2, h / 2, -h / 2, -10, 10);
+  const camera = new THREE.OrthographicCamera(-w / 2, w / 2, h / 2, -h / 2, -4000, 4000);
 
   // ---- uniforms -----------------------------------------------------------
   const uDt = uniform(0);
   const uTime = uniform(0);
   const uR = uniform(1); // fire radius in px
+  const uBaseX = uniform(0); // world x of the fire base
   const uBaseY = uniform(0); // world y of the fire base
   const uIntensity = uniform(0); // 0 dormant → 1 lit (briefly >1 at the flare)
   const uSparks = uniform(0.25);
@@ -66,7 +69,7 @@ export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> 
     }).Else(() => {
       // Flames start in a flattened disc on the logs.
       // Triangular distribution: dense at the heart, thin at the edges.
-      const spread = R.mul(0.62).mul(uIntensity.mul(0.5).add(0.5));
+      const spread = R.mul(0.5).mul(uIntensity.mul(0.5).add(0.5));
       const x = h1.add(h3).sub(1).mul(spread);
       p.assign(vec4(x, h2.mul(R.mul(0.1)), 0, 0));
       v.assign(vec4(
@@ -114,7 +117,7 @@ export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> 
       });
 
       // The pointer is heat: it pushes nearby flame and sparks aside.
-      const world = vec3(p.x, p.y.add(uBaseY), 0);
+      const world = vec3(p.x.add(uBaseX), p.y.add(uBaseY), 0);
       const d = world.sub(uPointer);
       const dist = d.length();
       If(dist.lessThan(160), () => {
@@ -130,6 +133,7 @@ export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> 
   const material = new THREE.SpriteNodeMaterial({
     transparent: true,
     depthWrite: false,
+    depthTest: false,
     blending: THREE.AdditiveBlending,
   });
 
@@ -141,7 +145,7 @@ export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> 
   const vSpark = varying(aSpark, "vSpark");
   const sparkOn = aSpark.greaterThan(0.5);
 
-  material.positionNode = vec3(aPos.x, aPos.y.add(uBaseY), 0);
+  material.positionNode = vec3(aPos.x.add(uBaseX), aPos.y.add(uBaseY), 0);
 
   material.scaleNode = Fn(() => {
     const r = aPos.w.div(aVel.w.max(0.001)).clamp(0, 1);
@@ -164,7 +168,7 @@ export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> 
     const c = uv().sub(0.5).length().mul(2);
     const disk = float(1).sub(c).clamp(0, 1).pow(1.7);
     const fadeIn = smoothstep(0.0, 0.2, r);
-    const flameA = disk.mul(float(1).sub(r).pow(1.2)).mul(fadeIn).mul(0.12).mul(uIntensity);
+    const flameA = disk.mul(float(1).sub(r).pow(1.2)).mul(fadeIn).mul(0.07).mul(uIntensity);
     const sparkA = disk.mul(float(1).sub(r)).mul(uSparks).mul(1.6);
     return mix(flameA, sparkA, vSpark);
   })();
@@ -175,9 +179,27 @@ export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> 
   geometry.setAttribute("sparkFlag", new THREE.InstancedBufferAttribute(flags, 1));
   const sprites = new THREE.InstancedMesh(geometry, material, COUNT);
   sprites.frustumCulled = false;
+  sprites.renderOrder = 2;
   scene.add(sprites);
 
+  // ---- the bonfire itself -----------------------------------------------------
+  // tilt (fixed, shows the top of the pile) > spin (scroll-driven) > model
+  const tilt = new THREE.Group();
+  tilt.rotation.x = 0.24;
+  const spin = new THREE.Group();
+  tilt.add(spin);
+  scene.add(tilt);
+  spin.add(await loadBonfire(opts.hasModel));
+
+  const fireLight = new THREE.PointLight(0xff8a3c, 0, 0, 0);
+  const fill = new THREE.HemisphereLight(0x6b5a4c, 0x120c08, 0.05);
+  // A cool, faint light from behind and above: it draws the sword's edge out of the dark.
+  const rim = new THREE.DirectionalLight(0x9fb2cc, 0);
+  rim.position.set(-0.6, 0.9, -0.5);
+  scene.add(fireLight, fill, rim);
+
   // ---- sizing ---------------------------------------------------------------
+  let baseR = 1;
   const resize = () => {
     w = window.innerWidth;
     h = window.innerHeight;
@@ -185,7 +207,7 @@ export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> 
     renderer.setSize(w, h, false);
     camera.left = -w / 2; camera.right = w / 2; camera.top = h / 2; camera.bottom = -h / 2;
     camera.updateProjectionMatrix();
-    uR.value = Math.min(w, h) * (w < 640 ? 0.2 : 0.13);
+    baseR = Math.min(w, h) * (w < 640 ? 0.2 : 0.13);
   };
   resize();
   window.addEventListener("resize", resize);
@@ -204,16 +226,35 @@ export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> 
 
     const phase = getPhase();
     const k = kindleProgress(now);
-    const scrollY = phase === "lit" ? window.scrollY : 0;
+    const st = stage(now);
+    const R = baseR * st.scale;
+    const bx = st.x * w - w / 2;
+    const by = h / 2 - st.y * h;
     uDt.value = dt;
     uTime.value = now / 1000;
-    uBaseY.value = h / 2 - (fireBaseFrac(now) * h - scrollY);
+    uR.value = R;
+    uBaseX.value = bx;
+    uBaseY.value = by;
+
+    // Model: one unit of the model is 0.95 R on screen.
+    tilt.position.set(bx, by - R * 0.16, 0);
+    tilt.scale.setScalar(R * 0.95);
+    spin.rotation.y = st.rot;
 
     // Ease up, overshoot into a flare around 70% of the kindling, then settle.
     const flare = Math.exp(-Math.pow((k - 0.72) / 0.16, 2)) * 0.45;
     uIntensity.value = phase === "dormant" ? 0 : Math.min(1, k * 1.25) + flare;
-    uLift.value = phase === "lit" ? (w < 900 ? 0.46 : 0.5) : 1;
+    uLift.value = phase === "lit" ? (w < 900 ? 0.36 : 0.38) : 1;
     uSparks.value = phase === "kindling" ? 0.5 + k * 0.8 : phase === "lit" ? 0.24 : 0;
+
+    // The fire lights the model from just in front; it flickers.
+    const t = now / 1000;
+    const flicker = 0.82 + 0.12 * Math.sin(t * 11.3) + 0.06 * Math.sin(t * 23.7 + 1.3);
+    const glow = phase === "dormant" ? 0.12 : Math.min(1, k * 1.2) + flare;
+    fireLight.intensity = 7 * glow * flicker;
+    fireLight.position.set(bx + Math.sin(t * 3.1) * R * 0.1, by + R * 0.7, R * 1.3);
+    fill.intensity = 0.06 + 0.55 * Math.min(1, glow);
+    rim.intensity = 0.15 + 0.9 * Math.min(1, glow);
 
     if (pointer.active) uPointer.value.set(pointer.x - w / 2, h / 2 - pointer.y, 0);
     else uPointer.value.set(9999, 9999, 0);
@@ -240,17 +281,20 @@ export async function startFire(canvas: HTMLCanvasElement): Promise<() => void> 
 
   // Only burn while the fire can be seen.
   const check = () => {
-    const visible = !document.hidden && (getPhase() !== "lit" || window.scrollY < h * 1.05);
-    setLooping(visible);
+    setLooping(!document.hidden && stage().visible);
   };
   check();
-  window.addEventListener("scroll", check, { passive: true });
+  // FireStage updates the scroll progress first; check on the next frame.
+  const onScroll = () => requestAnimationFrame(check);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  const offPhase = subscribe(check);
   document.addEventListener("visibilitychange", check);
 
   return () => {
     setLooping(false);
     window.removeEventListener("resize", resize);
-    window.removeEventListener("scroll", check);
+    window.removeEventListener("scroll", onScroll);
+    offPhase();
     document.removeEventListener("visibilitychange", check);
     gpu.ready = false;
     renderer.dispose();

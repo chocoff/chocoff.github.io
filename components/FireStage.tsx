@@ -2,17 +2,48 @@
 
 import { useEffect, useRef } from "react";
 import EmberField from "./EmberField";
-import { gpu, hydratePhase } from "@/lib/flame";
+import { gpu, hydratePhase, scroll } from "@/lib/flame";
 
-/** Fixed, behind everything: the GPU fire under the 2D ember field. */
-export default function FireStage() {
+const clamp = (n: number) => Math.max(0, Math.min(1, n));
+
+/** Fixed, behind everything: the GPU bonfire under the 2D ember field. */
+export default function FireStage({ hasModel }: { hasModel: boolean }) {
   const gpuRef = useRef<HTMLCanvasElement>(null);
+
+  // Scroll progress that positions and turns the bonfire.
+  useEffect(() => {
+    const about = document.getElementById("about");
+    const rest = document.getElementById("contact");
+    const measure = () => {
+      const vh = window.innerHeight;
+      if (about) {
+        const r = about.getBoundingClientRect();
+        scroll.aboutIn = clamp((vh - r.top) / vh);
+        scroll.aboutPin = clamp(-r.top / Math.max(1, r.height - vh));
+        scroll.aboutOut = clamp((vh - r.bottom) / (vh * 0.6));
+      }
+      if (rest) {
+        const r = rest.getBoundingClientRect();
+        scroll.rest = clamp((vh - r.top) / (vh * 0.8));
+      }
+    };
+    measure();
+    window.addEventListener("scroll", measure, { passive: true });
+    window.addEventListener("resize", measure);
+    return () => {
+      window.removeEventListener("scroll", measure);
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
 
   useEffect(() => {
     hydratePhase();
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const weak = (navigator.hardwareConcurrency ?? 4) <= 2;
-    if (reduce || weak) return;
+    if (reduce || weak) {
+      gpu.failed = true; // the 2D layer draws the whole fire
+      return;
+    }
 
     let stop: (() => void) | undefined;
     let cancelled = false;
@@ -21,7 +52,7 @@ export default function FireStage() {
       try {
         const { startFire } = await import("@/lib/fire-gpu");
         if (cancelled || !gpuRef.current) return;
-        stop = await startFire(gpuRef.current);
+        stop = await startFire(gpuRef.current, { hasModel });
         if (cancelled) stop();
       } catch (err) {
         gpu.failed = true;
@@ -40,7 +71,7 @@ export default function FireStage() {
       if (!idle) window.clearTimeout(handle);
       stop?.();
     };
-  }, []);
+  }, [hasModel]);
 
   return (
     <div className="fire-stage" aria-hidden="true">

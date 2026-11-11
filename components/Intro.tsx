@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { getPhase, hasKindledBefore, kindle, lightImmediately, subscribe, type Phase } from "@/lib/flame";
+import { ui, type Lang } from "@/content/i18n";
 
 /**
  * The darkness over the page. Invisible without JS (the pre-paint script
  * sets data-phase), so the content is always reachable.
  */
-export default function Intro() {
+export default function Intro({ lang }: { lang: Lang }) {
   const [phase, setPhase] = useState<Phase>("dormant");
   const [hinted, setHinted] = useState(false);
-  const button = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const initial = document.documentElement.dataset.phase as Phase | undefined;
@@ -57,16 +57,16 @@ export default function Intro() {
   return (
     <div className="intro" data-state={phase} data-hinted={hinted || undefined}>
       <p className="intro-mark">
-        Fernando Rojas <span aria-hidden="true">·</span> Software Developer
+        Fernando Rojas <span aria-hidden="true">·</span> {ui.introMark[lang]}
       </p>
 
-      <button ref={button} type="button" className="intro-kindle" onClick={() => kindle()} disabled={phase !== "dormant"}>
-        <span className="intro-prompt">Kindle the flame</span>
-        <span className="visually-hidden"> and enter the portfolio</span>
+      <button type="button" className="intro-kindle" onClick={() => kindle()} disabled={phase !== "dormant"}>
+        <span className="intro-prompt">{ui.kindle[lang]}</span>
+        <span className="visually-hidden">{ui.kindleSr[lang]}</span>
       </button>
 
       <button type="button" className="intro-skip" onClick={lightImmediately}>
-        Skip intro
+        {ui.skipIntro[lang]}
       </button>
     </div>
   );

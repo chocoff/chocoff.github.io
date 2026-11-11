@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { fireBaseFrac, getPhase, gpu, hydratePhase, kindleProgress, pointer, subscribe } from "@/lib/flame";
+import { getPhase, gpu, hydratePhase, kindleProgress, pointer, stage, subscribe } from "@/lib/flame";
 
 /**
  * The 2D layer. Always cheap, always first on screen:
@@ -141,12 +141,14 @@ export default function EmberField() {
 
       const phase = getPhase();
       const k = kindleProgress(now);
-      const scrollY = phase === "lit" ? window.scrollY : 0;
-      const bx = w / 2;
-      const by = fireBaseFrac(now) * h - scrollY;
-      const R = Math.min(w, h) * (w < 640 ? 0.2 : 0.13);
+      const st = stage(now);
+      const bx = st.x * w;
+      const by = st.y * h;
+      const R = Math.min(w, h) * (w < 640 ? 0.2 : 0.13) * st.scale;
+      // The 3D model replaces the drawn logs once the GPU scene is up.
+      const flat = reduce || gpu.failed;
       const t = now / 1000;
-      const baseVisible = by > -R * 2 && by < h + R;
+      const baseVisible = st.visible && by > -R * 2 && by < h + R * 2;
 
       ctx.clearRect(0, 0, w, h);
 
@@ -173,7 +175,7 @@ export default function EmberField() {
         ctx.fillStyle = pool;
         ctx.fillRect(0, 0, w, h);
 
-        drawLogs(bx, by, R, light, t);
+        if (flat) drawLogs(bx, by, R, light, t);
 
         ctx.globalCompositeOperation = "lighter";
         for (const e of embers) {

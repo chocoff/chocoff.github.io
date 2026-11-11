@@ -28,3 +28,12 @@ FIRST VIEWPORT: Full black. A small ember cluster at center, reacting to the cur
 FORM: pinned by GUIDE.md, seed: none (pinned). "The primary visual inspiration should be the atmosphere and visual identity of FromSoftware's Dark Souls series, particularly its bonfires." and "a professional portfolio that begins in darkness, invites the visitor to kindle a bonfire, and gradually reveals my professional journey". Signature interaction: kindling the bonfire, after which the fire persists as the page's light source, and its warmth follows scroll position. Motion grammar: slow ember drift, exponential ease-out reveals as light reaches each section; reduced motion gives a still, lit page.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+
+
+## Revision 2026-11-10 (owner feedback)
+
+- Bonfire becomes a real 3D model that moves and rotates with scroll; the owner supplies a CC BY Sketchfab model as `public/models/bonfire.glb`, a built-in model stands in until then.
+- Home narrows to hero, about (pinned, facets change as the model turns), path (pinned, walks horizontally), works, contact. Journal/records and the Cosmere shelf move to side pages behind two quiet doors.
+- Type relaxed from IM Fell English to Marcellus + Hanken Grotesk.
+- Spanish version at `/es/` with an EN / ES toggle.
+- Not re-reviewed by the finish reviewer after this revision.

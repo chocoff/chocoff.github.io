@@ -16,34 +16,34 @@ colors:
   rust: "#8c3f1c"
 typography:
   display:
-    fontFamily: "IM Fell English SC, Georgia, serif"
-    fontSize: "clamp(3rem, 1.4rem + 7.4vw, 7.2rem)"
+    fontFamily: "Marcellus, Georgia, serif"
+    fontSize: "clamp(2.7rem, 1.3rem + 6.2vw, 6rem)"
     fontWeight: 400
-    lineHeight: 0.92
-    letterSpacing: "-0.02em"
+    lineHeight: 1
+    letterSpacing: "-0.01em"
   headline:
-    fontFamily: "IM Fell English SC, Georgia, serif"
-    fontSize: "clamp(2.4rem, 1.6rem + 3.4vw, 4.6rem)"
+    fontFamily: "Marcellus, Georgia, serif"
+    fontSize: "clamp(2.2rem, 1.5rem + 2.8vw, 4rem)"
     fontWeight: 400
-    lineHeight: 0.98
+    lineHeight: 1.04
     letterSpacing: "-0.01em"
   title:
-    fontFamily: "IM Fell English SC, Georgia, serif"
+    fontFamily: "Marcellus, Georgia, serif"
     fontSize: "clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem)"
     fontWeight: 400
     lineHeight: 1.05
   inscription:
-    fontFamily: "IM Fell English, Georgia, serif"
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
     fontSize: "clamp(1.15rem, 1rem + 0.6vw, 1.5rem)"
     fontWeight: 400
     lineHeight: 1.3
   body:
-    fontFamily: "Alegreya Sans, system-ui, sans-serif"
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
     fontSize: "clamp(1.0625rem, 0.98rem + 0.3vw, 1.1875rem)"
     fontWeight: 400
     lineHeight: 1.6
   label:
-    fontFamily: "Alegreya Sans, system-ui, sans-serif"
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
     fontSize: "0.8rem"
     fontWeight: 400
     lineHeight: 1.4
@@ -101,14 +101,14 @@ components:
 
 **Creative North Star: "The Kindled Path"**
 
-A dark world lit by one living fire. The page opens in near-total darkness: a few embers on charred logs that react to the cursor, which is itself a small live coal. When the visitor kindles the bonfire, a real rendered fire (Three.js WebGPU compute particles, WebGL2 fallback, a 2D canvas underneath) rises and settles at the foot of the hero. From then on it is the page's only light source. Each section is a place that light reaches as you travel: the path of bonfires, the works, the journal, the Cosmere shelf, and the final fire where every contact action waits.
+A dark world lit by one living fire. The page opens in near-total darkness: a few embers on charred logs that react to the cursor, which is itself a small live coal. When the visitor kindles the bonfire, a 3D bonfire catches (Three.js WebGPU, WebGL2 fallback, a 2D canvas for embers) and and settles at the foot of the hero. From then on it is the page's only light source. Each section is a place that light reaches as you travel: the path of bonfires, the works, the journal, the Cosmere shelf, and the final fire where every contact action waits.
 
-The register is medieval fantasy held to professional restraint. The display voice is an old letterpress face set like an inscription. The ground is warm soot, the fire runs from ember through amber to old gilt, and smoke is the only gradient. Nothing is outlined in glow: light falls on things from below, as a fire would light them. Recruiters must still read who Choco is, what he does now and how to reach him within one viewport, so the fantasy is never allowed to cost legibility.
+The register is medieval fantasy held to professional restraint. The display voice is a calm roman face. The ground is warm soot, the fire runs from ember through amber to old gilt, and smoke is the only gradient. Nothing is outlined in glow: light falls on things from below, as a fire would light them. Recruiters must still read who Choco is, what he does now and how to reach him within one viewport, so the fantasy is never allowed to cost legibility.
 
 **Key Characteristics:**
 - A warm soot ground (never blue-black), with grain and faint smoke in the air below the hero.
 - One fire as the single light source, a fixed canvas behind content, with a hearth glow at the viewport foot whose strength follows the section.
-- IM Fell English SC inscriptions over a humanist sans (Alegreya Sans) body.
+- Marcellus headings over a neutral grotesque (Hanken Grotesk) body.
 - Rasters are lit from below and dimmed so no image outshines the fire.
 - Drawn line sigils (24px grid, 1.5 stroke) for navigation; no icon fonts, no emoji, no brand glyphs.
 - Every interaction has a tap or keyboard equivalent, and reduced motion gets a still, lit page.
@@ -140,39 +140,42 @@ Fire on soot: four warm darks, three bone-to-ash text tones, and a fire ramp fro
 
 ## Typography
 
-**Display Font:** IM Fell English SC (Georgia, serif fallback), self-hosted via next/font
-**Inscription Font:** IM Fell English, italic (aliases, prompts, the world labels on the shelf)
-**Body Font:** Alegreya Sans (system-ui fallback)
+**Display Font:** Marcellus (Georgia, serif fallback), self-hosted via next/font
+**Body Font:** Hanken Grotesk (system-ui fallback), with its italic as the quiet voice for prompts, asides and states
 
-**Character:** The Fell types are 17th-century letterpress, uneven and carved. They give the headings the weight of an inscription in a ruined keep, and Alegreya Sans keeps the reading calm and modern.
+**Character:** A calm roman display face over a neutral grotesque. The fire and the materials carry the fantasy; the type stays professional. (An earlier version used IM Fell English; the owner found it too medieval.)
 
 ### Hierarchy
-- **Display** (400, clamp 3–7.2rem, 0.92): the hero name only.
-- **Headline** (400, clamp 2.4–4.6rem, 0.98): section titles.
-- **Title** (400, clamp 1.6–2.3rem, 1.05): place names on the path, work titles (up to 3.2rem), ledger and shelf names (1.35–1.8rem).
-- **Inscription** (italic, clamp 1.15–1.5rem): the intro prompt, the hero alias, interests, world labels.
+- **Display** (400, clamp 2.7–6rem, 1.0): the hero name only.
+- **Headline** (400, clamp 2.2–4rem, 1.04): section titles.
+- **Title** (400, clamp 1.5–2.1rem, 1.1): place names on the path, work titles (up to 3.2rem), ledger, door and facet names.
+- **Inscription** (body italic, clamp 1.15–1.5rem): the intro prompt, the hero alias, world labels.
 - **Body** (400, clamp 1.0625–1.1875rem, 1.6): prose, held to a 66ch measure.
-- **Label** (0.8rem, uppercase, 0.07em tracking, Ash Dim): field labels inside work facts and skill groups only.
+- **Label** (0.8rem, uppercase, 0.07em tracking, Ash Dim): field labels inside work facts only.
 
 ### Named Rules
-**The Inscription Rule.** Display type is IM Fell English SC at weight 400. Hierarchy comes from size and colour, never from bolding the display face or adding a third family.
+**The Calm Type Rule.** Display type is Marcellus at weight 400. Hierarchy comes from size and colour. No blackletter, small caps or distressed faces: the type is never the costume.
 
 **The No-Eyebrow Rule.** Nothing small sits above a heading. Dates, kinds and meta follow the heading they describe.
 
 ## Layout
 
-Single-column journey down a 1240px measure with a fluid gutter (16–56px). Sections open with generous top space (clamp 96–180px) and a heading block capped at 760px. The hero is a centered, full-height column: name, alias, status line, one-sentence detail, contact rail, with the fire's base at 90% of the viewport (80% below 900px, clearing the tab bar).
+The home page is a scroll-driven journey with three priorities: hero, path, works. Everything else is one click away.
 
-Each section uses its own structure, so the page never becomes a stack of cards:
-- **Path:** a central dashed trail, with stops alternating left and right on desktop and collapsing to a left rail below 800px.
+- **Hero:** a centered, full-height column: name, alias, status line, one-sentence detail, contact rail. The bonfire stands at its foot (base at 94% of the viewport; 82% below 900px, clearing the tab bar).
+- **About (pinned on wide screens):** the section holds for 240vh while the bonfire walks to the right, comes closer and makes a full turn. Text sits in the left 52%; the four skill groups take the light one at a time as the model turns. Below 900px or with reduced motion it is a plain section with everything shown.
+- **Path (horizontal):** the section pins and vertical scroll walks a dashed trail sideways. Stops alternate above and below the trail (all below on narrow or short viewports), each bonfire kindles as it crosses 62% of the viewport width, and a thin bar shows progress. Without JS or with reduced motion it is a vertical list.
 - **Works:** large two-column spreads that alternate image sides, then a ruled list of smaller works.
-- **Records:** a ledger of rows with a date column.
-- **Journal:** a ruled grid of shelves.
-- **Cosmere:** a bookshelf of spines grouped by world. Below 640px it becomes a horizontally scrolling shelf with an edge fade, a swipe cue, and the latest book scrolled into view.
+- **Beyond:** two quiet ruled rows that open the side pages: Journal & records, and the Reading path.
+- **Contact:** the bonfire rises again at the centre under the contact rail.
 
-Navigation is a fixed sigil rail at the left on desktop and becomes a labeled bottom tab bar below 900px.
+Side pages (`/journal/`, `/reading/`, `/projects/reforest-ai/`) are plain documents on the same ground: back link, title, content, footer. They have no intro and no canvas.
 
-Breakpoints: 1360px (rail label behaviour), 900px (tab bar, works stack), 800px (path rail, about stack), 720px (ledger stacks), 640px (shelf scrolls, small work rows).
+The site is bilingual. English lives at `/`, Spanish at `/es/`, with a fixed EN / ES toggle at the top right. All text comes from `content/*.ts`, each string as `{ en, es }`.
+
+Navigation is a fixed sigil rail at the left on desktop and a labeled bottom tab bar below 900px. Measure is 1240px with a fluid gutter (16–56px).
+
+Breakpoints: 1360px (rail labels), 900px (tab bar, About unpinned, works stack, path below the trail), 720px (ledger stacks), 640px (shelf scrolls, doors stack).
 
 ## Elevation & Depth
 
@@ -208,7 +211,16 @@ Email (mailto) plus copy, WhatsApp and Résumé (download) as actions, then Link
 Drawn 24px line sigils, 1.5 stroke: flame, path, anvil, seal, book, lantern. They sit in Ash Dim at rest, warm to Flame with an upward lit-mark on hover or focus, and turn Ember on the active section (`aria-current="location"`). On desktop, labels and a one-line preview slide in on hover or focus; on mobile the labels are always visible in the tab bar.
 
 ### Path stop
-A bonfire mark on the trail that kindles as it enters view (the flame scales in, then flickers slowly). The official logo comes first as a link, then the place name in Title, the full institution name, the role in Gilt, dates and kind, a summary, and the location with the official domain link.
+A bonfire mark on the trail that kindles when reached (the flame scales in, then flickers slowly), with the start year beside it. The body carries the official logo as a link, the place name in Title, the full institution name, the role in Gilt, dates and kind, a summary, and the location with the official domain link. Unreached stops wait at 35% opacity.
+
+### About facet
+A ruled row with a skill group's name in the display face and its items beside it. The active facet is at full opacity with its name in Flame; the others rest at 38%.
+
+### Door
+A ruled row that opens a side page: name in the display face, a one-line note, and an arrow that slides on hover.
+
+### Language toggle
+A small bordered `EN / ES` link fixed at the top right; the current language is in Flame.
 
 ### Work spread
 The image plate is lit from below (sepia and dimming, a multiply top-shadow, a screen under-light). Diagrams on white carry `data-tone="light"` and are dimmed harder. Next to it sit the title, a one-line summary, Problem / Build / Stack facts under a Stone 2 rule, and links.
@@ -216,30 +228,31 @@ The image plate is lit from below (sepia and dimming, a multiply top-shadow, a s
 ### Ledger row
 Date, then the title linked to its source (the whole row is the hit area), the summary, and the source name in Gilt. Spanish titles carry `lang="es"`.
 
-### Journal shelf
-Name, then what it holds, then its state in italic. "Open" in Flame links to a filled section; "First entry coming" stays in Ash Dim until posts exist.
-
 ### Signature: Cosmere spine
 Bookcloth per world (Scadrial umber, Sel verdigris, Nalthis crimson, Roshar storm slate, Canticle burnt gold) with Gilt foil bands, the title set vertically in the display face, and a small flame above the spine. Novels, novellas and short stories differ in width and height. The latest book's flame burns larger and flickers; a planned book shows an unlit outline. Hover, focus or tap selects a spine and fills the panel below with title, meta, blurb and an official link.
 
 ### Signature: the bonfire
-There are four states, with motion only where it carries meaning:
-- **Dormant:** embers flicker on logs and brighten near the pointer, which is drawn as a small live coal.
-- **Kindling:** about 1.7s of embers flaring, sparks rising, and a radial sweep of warm light.
-- **Lit:** the fire settles low; the name sharpens out of a blur.
-- **Ambient:** sparse motes drift up the page.
+A real 3D object on a fixed canvas (Three.js WebGPU, WebGL2 fallback): the model from `public/models/bonfire.glb` when present, otherwise a built-in one (ash mound, stones, charred logs, a twisted sword with a ring pommel). It is lit by a flickering warm point light from the fire, a faint hemisphere fill and a cool rim light. Flames and sparks are TSL compute particles; a 2D canvas above adds embers and draws the whole fire when the GPU scene is unavailable or motion is reduced.
 
-The fire canvas hides whenever its loop pauses, so a stale frame never shows. Returning visitors get a one-second relight, deep links and reduced motion land lit, and "Skip intro" and Escape always work.
+Its place, size and rotation are scroll-driven (`stage()` in `lib/flame.ts`):
+- **Dormant:** centred in the dark, embers react to the pointer, which is drawn as a small live coal.
+- **Kindling:** about 1.7s of embers flaring, sparks rising, and a radial sweep of warm light.
+- **Hero:** settled low at the centre; the name sharpens out of a blur.
+- **About:** walks right, grows 1.55x and turns a full circle through the pinned section, then sinks away.
+- **Contact:** rises again at the centre and makes a half turn.
+
+The canvas hides whenever its loop pauses, so a stale frame never shows. Returning visitors get a one-second relight, deep links and reduced motion land lit, "Skip intro" and Escape always work, and a failsafe lights the page if scripts fail to start.
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** keep Soot (#0c0a08) as the ground and the fire as the single light source.
 - **Do** light every raster from below and dim it until it sits under the fire in brightness.
-- **Do** set headings in IM Fell English SC at 400 and let size and Bone/Ash/Gilt carry rank.
+- **Do** set headings in Marcellus at 400 and let size and Bone/Ash/Gilt carry rank.
 - **Do** give every hover a focus and tap equivalent, and every animation a reduced-motion still.
 - **Do** keep the contact rail one action away: Email, WhatsApp and Résumé in the hero and at the close.
-- **Do** edit content only in `content/*.ts`; the page reads from there.
+- **Do** edit content only in `content/*.ts`, always in both `en` and `es`.
+- **Do** keep the home page to hero, about, path, works and contact; side interests live behind the Beyond doors.
 
 ### Don't:
 - **Don't** introduce cool or blue-black neutrals, or a light section.
@@ -247,4 +260,5 @@ The fire canvas hides whenever its loop pauses, so a stale frame never shows. Re
 - **Don't** put an eyebrow, kicker or date above a heading.
 - **Don't** use icon fonts, emoji or brand glyphs; draw sigils on the 24px, 1.5-stroke grid, and name brands in words.
 - **Don't** let fire particles or sparks pass behind live text without the soot scrim.
-- **Don't** use FromSoftware assets or their coiled-sword bonfire; the bonfire here is drawn logs and a rendered fire.
+- **Don't** ship a third-party bonfire model without its licence credit in the footer (the Sketchfab model by UselessViking is CC BY 4.0), and never use assets ripped from the games.
+- **Don't** use blackletter, small caps or distressed display type.
