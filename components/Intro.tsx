@@ -57,7 +57,7 @@ export default function Intro({ lang }: { lang: Lang }) {
   return (
     <div className="intro" data-state={phase} data-hinted={hinted || undefined}>
       <p className="intro-mark">
-        Fernando Rojas <span aria-hidden="true">·</span> {ui.introMark[lang]}
+        Choco <span aria-hidden="true">·</span> {ui.introMark[lang]}
       </p>
 
       <button type="button" className="intro-kindle" onClick={() => kindle()} disabled={phase !== "dormant"}>

@@ -26,14 +26,22 @@ export default function AboutPinned({ lang }: { lang: Lang }) {
   useEffect(() => {
     if (!pinned) return;
     const el = ref.current!;
-    const onScroll = () => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
       const r = el.getBoundingClientRect();
       const p = Math.max(0, Math.min(0.999, -r.top / Math.max(1, r.height - window.innerHeight)));
       setActive(Math.floor(p * skills.length));
     };
-    onScroll();
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [pinned]);
 
   return (
@@ -44,7 +52,7 @@ export default function AboutPinned({ lang }: { lang: Lang }) {
             {ui.aboutTitle[lang]}
           </h2>
           <div className="about-intro">
-            <Image className="about-portrait" src="/media/portrait.webp" alt={ui.portraitAlt[lang]} width={900} height={1200} sizes="120px" />
+            <Image className="about-portrait" src="/media/portrait.webp" alt={ui.portraitAlt[lang]} width={480} height={480} sizes="112px" loading="lazy" />
             <p className="lede">{site.intro[lang]}</p>
           </div>
 

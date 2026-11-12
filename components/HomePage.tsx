@@ -24,7 +24,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
     { id: "path", label: ui.navPath[lang], preview: en ? `${journey.length} stops, ${journey[0].start[0]} to today` : `${journey.length} paradas, de ${journey[0].start[0]} a hoy`, warmth: 0.6 },
     { id: "works", label: ui.navWorks[lang], preview: en ? `${projects.length} projects, ${featured} in depth` : `${projects.length} proyectos, ${featured} a fondo`, warmth: 0.55 },
     { id: "more", label: ui.navMore[lang], preview: en ? "Journal, records and reading" : "Bitácora, registros y lecturas", warmth: 0.5 },
-    { id: "contact", label: ui.navContact[lang], preview: en ? "Email, WhatsApp, résumé" : "Correo, WhatsApp, currículum", warmth: 1 },
+    { id: "contact", label: ui.navContact[lang], preview: en ? "Email, WhatsApp, resume" : "Correo, WhatsApp, currículum", warmth: 1 },
   ];
 
   return (

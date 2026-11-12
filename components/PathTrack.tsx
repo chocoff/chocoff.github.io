@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { journey, monthYear } from "@/content/journey";
 import { ui, type Lang } from "@/content/i18n";
-import { ArrowOutIcon, BonfireMark } from "./icons";
+import { ArrowOutIcon } from "./icons";
 
 /**
  * The path. With motion allowed, the section pins and vertical scroll walks
- * the trail sideways; each bonfire kindles as it is reached. Without JS or
+ * the trail sideways; each stop lights up as it is reached. Without JS or
  * with reduced motion it is a plain vertical list.
  */
 export default function PathTrack({ lang }: { lang: Lang }) {
@@ -31,25 +31,37 @@ export default function PathTrack({ lang }: { lang: Lang }) {
     const sec = section.current!;
     const tr = track.current!;
     let dist = 0;
+    let marks: number[] = []; // each stop's marker, px from the track's left edge
+    let best = -1;
+    let frame = 0;
 
-    const measure = () => {
-      dist = Math.max(0, tr.scrollWidth - window.innerWidth);
-      setTravel(dist);
-      onScroll();
-    };
-    const onScroll = () => {
+    const update = () => {
+      frame = 0;
       const r = sec.getBoundingClientRect();
-      const p = Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - window.innerHeight)));
+      const vh = window.innerHeight;
+      if (r.bottom < 0 || r.top > vh) return; // off screen: nothing to move
+      const p = Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - vh)));
       const x = -p * dist;
       tr.style.transform = `translate3d(${x}px,0,0)`;
-      sec.style.setProperty("--p", String(p));
-      // A stop is reached when its fire crosses 62% of the viewport width.
+      sec.style.setProperty("--p", p.toFixed(4));
+      if (r.top >= vh * 0.6) return;
+      // A stop is reached when its marker crosses 62% of the viewport width.
       const line = window.innerWidth * 0.62 - x;
       let n = -1;
-      tr.querySelectorAll<HTMLElement>(".stop").forEach((el, i) => {
-        if (el.offsetLeft + 22 < line) n = i;
-      });
-      if (r.top < window.innerHeight * 0.6) setReached((prev) => Math.max(prev, n));
+      for (let i = 0; i < marks.length; i++) if (marks[i] < line) n = i;
+      if (n > best) {
+        best = n;
+        setReached(n);
+      }
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const measure = () => {
+      dist = Math.max(0, tr.scrollWidth - window.innerWidth);
+      marks = Array.from(tr.children as HTMLCollectionOf<HTMLElement>, (el) => el.offsetLeft + 22);
+      setTravel(dist);
+      schedule();
     };
     // Keyboard users: bring a focused stop into view by scrolling the page.
     const onFocus = (e: FocusEvent) => {
@@ -61,11 +73,15 @@ export default function PathTrack({ lang }: { lang: Lang }) {
     };
 
     measure();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    const ro = new ResizeObserver(measure);
+    ro.observe(tr);
+    window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", measure);
     tr.addEventListener("focusin", onFocus);
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+      ro.disconnect();
+      window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", measure);
       tr.removeEventListener("focusin", onFocus);
       tr.style.transform = "";
@@ -93,31 +109,44 @@ export default function PathTrack({ lang }: { lang: Lang }) {
           {journey.map((s, i) => {
             const lit = !walk || i <= reached;
             return (
-              <li key={s.id} className="stop" data-kind={s.kind} data-row={i % 2 ? "low" : "high"} data-lit={lit || undefined} data-current={s.end === null || undefined}>
-                <span className="stop-fire">
-                  <BonfireMark />
-                </span>
+              <li
+                key={s.id}
+                className="stop"
+                data-kind={s.kind}
+                data-row={i % 2 ? "low" : "high"}
+                data-lit={lit || undefined}
+                data-current={s.end === null || undefined}
+                data-photo={s.photo ? "" : undefined}
+              >
+                <span className="stop-mark" aria-hidden="true" />
                 <span className="stop-year" aria-hidden="true">
                   {s.start[0]}
                 </span>
                 <article className="stop-body">
-                  <a className="stop-logo" href={s.url} target="_blank" rel="noopener noreferrer" data-wide={s.logo.wide || undefined}>
-                    <Image src={s.logo.src} alt={`${s.placeLong ?? s.place} ${ui.logoOf[lang]}`} width={s.logo.width} height={s.logo.height} />
-                  </a>
-                  <h3 className="stop-place">{s.place}</h3>
-                  {s.placeLong && <p className="stop-place-long">{s.placeLong}</p>}
-                  <p className="stop-role">{s.role[lang]}</p>
-                  <p className="stop-when">
-                    <time>{monthYear(s.start, lang)}</time> – {s.end ? <time>{monthYear(s.end, lang)}</time> : <strong>{ui.present[lang]}</strong>}
-                    <span className="stop-kind">{s.kind === "study" ? ui.study[lang] : ui.work[lang]}</span>
-                  </p>
-                  <p className="stop-summary">{s.summary[lang]}</p>
-                  <p className="stop-foot">
-                    {s.location && <span>{s.location[lang]}</span>}
-                    <a className="text-link" href={s.url} target="_blank" rel="noopener noreferrer">
-                      {new URL(s.url).hostname.replace(/^www\./, "")} <ArrowOutIcon />
+                  <div className="stop-text">
+                    <a className="stop-logo" href={s.url} target="_blank" rel="noopener noreferrer" data-wide={s.logo.wide || undefined}>
+                      <Image src={s.logo.src} alt={`${s.placeLong ?? s.place} ${ui.logoOf[lang]}`} width={s.logo.width} height={s.logo.height} loading="lazy" />
                     </a>
-                  </p>
+                    <h3 className="stop-place">{s.place}</h3>
+                    {s.placeLong && <p className="stop-place-long">{s.placeLong}</p>}
+                    <p className="stop-role">{s.role[lang]}</p>
+                    <p className="stop-when">
+                      <time>{monthYear(s.start, lang)}</time> – {s.end ? <time>{monthYear(s.end, lang)}</time> : <strong>{ui.present[lang]}</strong>}
+                      <span className="stop-kind">{s.kind === "study" ? ui.study[lang] : ui.work[lang]}</span>
+                    </p>
+                    <p className="stop-summary">{s.summary[lang]}</p>
+                    <p className="stop-foot">
+                      {s.location && <span>{s.location[lang]}</span>}
+                      <a className="text-link" href={s.url} target="_blank" rel="noopener noreferrer">
+                        {new URL(s.url).hostname.replace(/^www\./, "")} <ArrowOutIcon />
+                      </a>
+                    </p>
+                  </div>
+                  {s.photo && (
+                    <figure className="stop-photo">
+                      <Image src={s.photo.src} alt={s.photo.alt[lang]} width={400} height={500} sizes="(max-width: 640px) 100vw, 200px" loading="lazy" />
+                    </figure>
+                  )}
                 </article>
               </li>
             );

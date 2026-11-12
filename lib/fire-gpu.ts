@@ -7,10 +7,10 @@
 import * as THREE from "three/webgpu";
 import {
   Fn, If, uniform, float, vec3, vec4, instancedArray, instanceIndex,
-  hash, sin, mix, smoothstep, uv, select, varying, attribute,
+  hash, sin, mix, smoothstep, uv, select, varying, attribute, positionLocal,
 } from "three/tsl";
 import { getPhase, gpu, kindleProgress, pointer, stage, subscribe } from "./flame";
-import { loadBonfire } from "./bonfire-model";
+import { fireGlow, loadBonfire } from "./bonfire-model";
 
 const FLAMES = 2600;
 const SPARKS = 260;
@@ -20,14 +20,20 @@ const SOOT = "#0c0a08";
 export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boolean }): Promise<() => void> {
   // Opaque, painted in the page's own soot. A transparent canvas with additive
   // glow leaves colour > alpha, which WebGPU compositing treats as undefined.
-  const renderer = new THREE.WebGPURenderer({ canvas, antialias: false, alpha: false });
+  const renderer = new THREE.WebGPURenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
   renderer.setClearColor(new THREE.Color(SOOT), 1);
+  // Filmic response for the lit model; the flame sprites opt out and keep their own colour.
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.15;
   await renderer.init();
 
   let w = window.innerWidth;
   let h = window.innerHeight;
   const scene = new THREE.Scene();
-  const camera = new THREE.OrthographicCamera(-w / 2, w / 2, h / 2, -h / 2, -4000, 4000);
+  // Perspective, but placed so that one world unit is one CSS pixel on the
+  // z = 0 plane: the particles keep working in pixels and the model gets depth.
+  const FOV = 26;
+  const camera = new THREE.PerspectiveCamera(FOV, w / h, 1, 10000);
 
   // ---- uniforms -----------------------------------------------------------
   const uDt = uniform(0);
@@ -69,7 +75,7 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
     }).Else(() => {
       // Flames start in a flattened disc on the logs.
       // Triangular distribution: dense at the heart, thin at the edges.
-      const spread = R.mul(0.5).mul(uIntensity.mul(0.5).add(0.5));
+      const spread = R.mul(0.36).mul(uIntensity.mul(0.5).add(0.5));
       const x = h1.add(h3).sub(1).mul(spread);
       p.assign(vec4(x, h2.mul(R.mul(0.1)), 0, 0));
       v.assign(vec4(
@@ -136,6 +142,7 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
     depthTest: false,
     blending: THREE.AdditiveBlending,
   });
+  material.toneMapped = false;
 
   // Render-side reads go through instanced attributes (works on WebGPU and WebGL2).
   const aPos = pos.toAttribute();
@@ -149,7 +156,7 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
 
   material.scaleNode = Fn(() => {
     const r = aPos.w.div(aVel.w.max(0.001)).clamp(0, 1);
-    const flame = uR.mul(0.34).mul(float(1).sub(r.mul(0.75))).mul(uIntensity.mul(0.4).add(0.6));
+    const flame = uR.mul(0.22).mul(float(1).sub(r.mul(0.75))).mul(uIntensity.mul(0.4).add(0.6));
     const spark = uR.mul(0.035).mul(float(1).sub(r.mul(0.5)));
     return select(sparkOn, spark, flame);
   })();
@@ -168,7 +175,7 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
     const c = uv().sub(0.5).length().mul(2);
     const disk = float(1).sub(c).clamp(0, 1).pow(1.7);
     const fadeIn = smoothstep(0.0, 0.2, r);
-    const flameA = disk.mul(float(1).sub(r).pow(1.2)).mul(fadeIn).mul(0.07).mul(uIntensity);
+    const flameA = disk.mul(float(1).sub(r).pow(1.2)).mul(fadeIn).mul(0.045).mul(uIntensity);
     const sparkA = disk.mul(float(1).sub(r)).mul(uSparks).mul(1.6);
     return mix(flameA, sparkA, vSpark);
   })();
@@ -185,27 +192,39 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
   // ---- the bonfire itself -----------------------------------------------------
   // tilt (fixed, shows the top of the pile) > spin (scroll-driven) > model
   const tilt = new THREE.Group();
-  tilt.rotation.x = 0.24;
+  tilt.rotation.x = 0.3;
   const spin = new THREE.Group();
   tilt.add(spin);
   scene.add(tilt);
   spin.add(await loadBonfire(opts.hasModel));
 
-  const fireLight = new THREE.PointLight(0xff8a3c, 0, 0, 0);
+  // Light comes from inside the pile. The point lights live in the tilted
+  // frame, in model units, and fall off physically (intensity scales with R²).
+  const core = new THREE.PointLight(0xff7a2e, 0, 0, 2);
+  core.position.set(0, 0.42, 0.08);
+  const crown = new THREE.PointLight(0xffa04a, 0, 0, 2);
+  crown.position.set(0.05, 1.05, 0.35);
+  tilt.add(core, crown);
   const fill = new THREE.HemisphereLight(0x6b5a4c, 0x120c08, 0.05);
   // A cool, faint light from behind and above: it draws the sword's edge out of the dark.
   const rim = new THREE.DirectionalLight(0x9fb2cc, 0);
   rim.position.set(-0.6, 0.9, -0.5);
-  scene.add(fireLight, fill, rim);
+  scene.add(fill, rim);
+  scene.environment = await fireEnvironment(renderer);
+  scene.environmentIntensity = 0.28;
 
   // ---- sizing ---------------------------------------------------------------
   let baseR = 1;
   const resize = () => {
     w = window.innerWidth;
     h = window.innerHeight;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(w, h, false);
-    camera.left = -w / 2; camera.right = w / 2; camera.top = h / 2; camera.bottom = -h / 2;
+    const dist = h / 2 / Math.tan(THREE.MathUtils.degToRad(FOV / 2));
+    camera.aspect = w / h;
+    camera.position.set(0, 0, dist);
+    camera.near = Math.max(1, dist - 3000);
+    camera.far = dist + 3000;
     camera.updateProjectionMatrix();
     baseR = Math.min(w, h) * (w < 640 ? 0.2 : 0.13);
   };
@@ -247,14 +266,17 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
     uLift.value = phase === "lit" ? (w < 900 ? 0.36 : 0.38) : 1;
     uSparks.value = phase === "kindling" ? 0.5 + k * 0.8 : phase === "lit" ? 0.24 : 0;
 
-    // The fire lights the model from just in front; it flickers.
+    // The fire lights the model from within; it flickers and sways a little.
     const t = now / 1000;
     const flicker = 0.82 + 0.12 * Math.sin(t * 11.3) + 0.06 * Math.sin(t * 23.7 + 1.3);
     const glow = phase === "dormant" ? 0.12 : Math.min(1, k * 1.2) + flare;
-    fireLight.intensity = 7 * glow * flicker;
-    fireLight.position.set(bx + Math.sin(t * 3.1) * R * 0.1, by + R * 0.7, R * 1.3);
-    fill.intensity = 0.06 + 0.55 * Math.min(1, glow);
-    rim.intensity = 0.15 + 0.9 * Math.min(1, glow);
+    const unit = R * 0.95; // px per model unit
+    fireGlow.value = 0.15 + glow * 0.9;
+    core.intensity = 2.6 * glow * flicker * unit * unit;
+    crown.intensity = 0.9 * glow * (0.9 + 0.1 * Math.sin(t * 7.1)) * unit * unit;
+    core.position.x = Math.sin(t * 3.1) * 0.05;
+    fill.intensity = 0.05 + 0.35 * Math.min(1, glow);
+    rim.intensity = 0.2 + 1.1 * Math.min(1, glow);
 
     if (pointer.active) uPointer.value.set(pointer.x - w / 2, h / 2 - pointer.y, 0);
     else uPointer.value.set(9999, 9999, 0);
@@ -285,18 +307,49 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
   };
   check();
   // FireStage updates the scroll progress first; check on the next frame.
-  const onScroll = () => requestAnimationFrame(check);
+  let pending = 0;
+  const onScroll = () => {
+    if (!pending) pending = requestAnimationFrame(() => {
+      pending = 0;
+      check();
+    });
+  };
   window.addEventListener("scroll", onScroll, { passive: true });
   const offPhase = subscribe(check);
   document.addEventListener("visibilitychange", check);
 
   return () => {
     setLooping(false);
+    cancelAnimationFrame(pending);
     window.removeEventListener("resize", resize);
     window.removeEventListener("scroll", onScroll);
     offPhase();
     document.removeEventListener("visibilitychange", check);
     gpu.ready = false;
+    scene.environment?.dispose();
     renderer.dispose();
   };
+}
+
+/**
+ * A tiny, blurred surrounding for reflections: warm firelight from below,
+ * cold dark above. It is what lets the iron read as metal.
+ */
+async function fireEnvironment(renderer: THREE.WebGPURenderer): Promise<THREE.Texture | null> {
+  try {
+    const env = new THREE.Scene();
+    const mat = new THREE.MeshBasicNodeMaterial({ side: THREE.BackSide });
+    const y = positionLocal.normalize().y;
+    mat.colorNode = mix(vec3(0.8, 0.28, 0.07), vec3(0.03, 0.035, 0.045), smoothstep(-0.7, 0.15, y));
+    const sphere = new THREE.Mesh(new THREE.SphereGeometry(10, 24, 12), mat);
+    env.add(sphere);
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const target = pmrem.fromScene(env, 0.04);
+    pmrem.dispose();
+    sphere.geometry.dispose();
+    mat.dispose();
+    return target.texture;
+  } catch {
+    return null;
+  }
 }

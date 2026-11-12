@@ -12,10 +12,8 @@ export function Hero({ lang }: { lang: Lang }) {
     <header className="hero" id="top">
       <div className="hero-inner">
         <h1 className="hero-title" id="hero-title" tabIndex={-1}>
-          <span className="hero-name">{site.name}</span>
-          <span className="hero-alias">
-            <span className="hero-aka">{ui.aka[lang]}</span> {site.alias}
-          </span>
+          <span className="hero-name">{site.alias}</span>
+          <span className="hero-alias">{site.name}</span>
         </h1>
         <p className="hero-status">
           <span className="status-dot" aria-hidden="true" />
@@ -167,7 +165,7 @@ export function Footer({ lang, hasModel, home = false }: { lang: Lang; hasModel?
   return (
     <footer className="footer">
       <p>
-        © {new Date().getFullYear()} {site.name}. {ui.footerBuilt[lang]}
+        © {new Date().getFullYear()} {site.alias} · {site.name}.
         {hasModel && (
           <>
             {" "}

@@ -12,7 +12,6 @@ export const ui = {
   kindleSr: { en: " and enter the portfolio", es: " y entra al portafolio" },
   skipIntro: { en: "Skip intro", es: "Saltar intro" },
   skipContent: { en: "Skip to content", es: "Saltar al contenido" },
-  aka: { en: "also known as", es: "también conocido como" },
   langSwitch: { en: "Ver en español", es: "View in English" },
 
   navLabel: { en: "Sections", es: "Secciones" },
@@ -26,19 +25,18 @@ export const ui = {
   emailMe: { en: "Email me", es: "Escríbeme" },
   copyEmail: { en: "Copy", es: "Copiar" },
   copied: { en: "Address copied", es: "Dirección copiada" },
-  resume: { en: "Résumé", es: "Currículum" },
+  resume: { en: "Resume", es: "Currículum" },
 
   aboutTitle: { en: "By the fire", es: "Junto al fuego" },
   skills: { en: "What I work with", es: "Con qué trabajo" },
   interests: { en: "Off the clock", es: "Fuera del trabajo" },
-  portraitAlt: { en: "Fernando Rojas", es: "Fernando Rojas" },
+  portraitAlt: { en: "Portrait of Fernando Rojas (Choco)", es: "Retrato de Fernando Rojas (Choco)" },
 
   pathTitle: { en: "The path so far", es: "El camino hasta aquí" },
   pathSub: {
     en: "Every place I've studied and worked, from the first semester in Paraguay to today.",
     es: "Cada lugar donde estudié y trabajé, desde el primer semestre en Paraguay hasta hoy.",
   },
-  pathHint: { en: "Keep scrolling to walk the path", es: "Sigue bajando para recorrer el camino" },
   study: { en: "Study", es: "Estudios" },
   work: { en: "Work", es: "Trabajo" },
   present: { en: "present", es: "actualidad" },
@@ -56,13 +54,8 @@ export const ui = {
   inEnglish: { en: "", es: " (en inglés)" },
 
   moreTitle: { en: "Beyond the work", es: "Más allá del trabajo" },
-  moreSub: {
-    en: "Two side rooms, for the curious.",
-    es: "Dos salas aparte, para quien tenga curiosidad.",
-  },
   journalDoor: { en: "Journal & records", es: "Bitácora y registros" },
   readingDoor: { en: "Reading path", es: "Camino de lectura" },
-  open: { en: "Open", es: "Abrir" },
 
   restTitle: { en: "Sit by the fire a while", es: "Quédate un rato junto al fuego" },
   restLede: {
@@ -70,10 +63,6 @@ export const ui = {
     es: "Con gusto hablamos de puestos, colaboraciones, juegos o el último libro que leíste. Por correo o WhatsApp, como prefieras.",
   },
 
-  footerBuilt: {
-    en: "Built from scratch with Next.js and a WebGPU bonfire.",
-    es: "Hecho desde cero con Next.js y una hoguera en WebGPU.",
-  },
   backToFire: { en: "Back to the fire", es: "Volver al fuego" },
   modelCredit: { en: "Bonfire model:", es: "Modelo de la hoguera:" },
 

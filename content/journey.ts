@@ -13,6 +13,8 @@ export type Stop = {
   summary: L;
   url: string;
   logo: { src: string; width: number; height: number; wide?: boolean };
+  /** A photo from that stop, 4:5. */
+  photo?: { src: string; alt: L };
 };
 
 /** Oldest first. The path is drawn in this order. */
@@ -46,6 +48,10 @@ export const journey: readonly Stop[] = [
     },
     url: "https://cast.com.py/",
     logo: { src: "/media/logos/cast.svg", width: 64, height: 64 },
+    photo: {
+      src: "/media/path/cast.webp",
+      alt: { en: "Choco holding his internship certificate at Cast", es: "Choco con su certificado de pasantía en Cast" },
+    },
   },
   {
     id: "ntust",
@@ -62,6 +68,10 @@ export const journey: readonly Stop[] = [
     },
     url: "https://www.ntust.edu.tw/",
     logo: { src: "/media/logos/ntust.png", width: 415, height: 80, wide: true },
+    photo: {
+      src: "/media/path/ntust.webp",
+      alt: { en: "Choco at Taiwan Tech holding two awards for the BCI project", es: "Choco en Taiwan Tech con dos premios por el proyecto BCI" },
+    },
   },
   {
     id: "reekon",
@@ -91,6 +101,10 @@ export const journey: readonly Stop[] = [
     },
     url: "https://www.igs.com.tw/en/",
     logo: { src: "/media/logos/igs.png", width: 140, height: 100 },
+    photo: {
+      src: "/media/path/igs.webp",
+      alt: { en: "Choco in the IGS lobby, next to an arcade character statue", es: "Choco en el vestíbulo de IGS, junto a la estatua de un personaje de arcade" },
+    },
   },
   {
     id: "dualtti",
@@ -101,8 +115,8 @@ export const journey: readonly Stop[] = [
     end: null,
     location: { en: "Paraguay", es: "Paraguay" },
     summary: {
-      en: "Building software for a Paraguayan Meta Ads agency, and managing client accounts and their campaigns directly.",
-      es: "Desarrollo software para una agencia paraguaya de Meta Ads y gestiono directamente las cuentas de clientes y sus campañas.",
+      en: "Building software for clients and owning the relationship end to end: understanding what they need, scoping it, delivering it and following up.",
+      es: "Desarrollo software para clientes y llevo la relación de punta a punta: entender lo que necesitan, definir el alcance, entregarlo y darle seguimiento.",
     },
     url: "https://dualtti.com/",
     logo: { src: "/media/logos/dualtti.png", width: 256, height: 256 },

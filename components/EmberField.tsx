@@ -12,7 +12,7 @@ import { getPhase, gpu, hydratePhase, kindleProgress, pointer, stage, subscribe 
  */
 
 type Ember = {
-  ox: number; oy: number; // offset from base, in units of R
+  a: number; r: number; // polar position on the ground around the base, r in units of R
   size: number;
   heat: number;
   phase: number;
@@ -62,7 +62,8 @@ export default function EmberField() {
 
     let w = 0, h = 0, dpr = 1;
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Soft glows lose nothing at a lower resolution, and this layer covers the whole screen.
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       w = window.innerWidth;
       h = window.innerHeight;
       canvas.width = Math.round(w * dpr);
@@ -76,8 +77,8 @@ export default function EmberField() {
       const r = Math.abs(gauss()) * 0.42;
       const a = Math.random() * Math.PI * 2;
       return {
-        ox: Math.cos(a) * r * 1.5,
-        oy: Math.sin(a) * r * 0.42, // flattened: embers lie on the ground
+        a,
+        r,
         size: 0.8 + Math.random() * 2.4,
         heat: 0.25 + Math.random() * 0.75,
         phase: Math.random() * Math.PI * 2,
@@ -168,19 +169,22 @@ export default function EmberField() {
       if (baseVisible) {
         // Ground light under the fire.
         const light = Math.min(1, 0.25 + k * 0.9);
-        const pool = ctx.createRadialGradient(bx, by + R * 0.1, 0, bx, by + R * 0.1, R * (2.2 + k * 3));
+        const poolR = R * (2.2 + k * 3);
+        const pool = ctx.createRadialGradient(bx, by + R * 0.1, 0, bx, by + R * 0.1, poolR);
         pool.addColorStop(0, `rgba(255,120,40,${0.1 + k * 0.22})`);
         pool.addColorStop(0.5, `rgba(140,50,15,${0.04 + k * 0.08})`);
         pool.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = pool;
-        ctx.fillRect(0, 0, w, h);
+        ctx.fillRect(bx - poolR, by + R * 0.1 - poolR, poolR * 2, poolR * 2);
 
         if (flat) drawLogs(bx, by, R, light, t);
 
         ctx.globalCompositeOperation = "lighter";
         for (const e of embers) {
-          let ex = bx + e.ox * R;
-          let ey = by + e.oy * R;
+          // Embers lie on the ground and turn with the model (flattened by the camera tilt).
+          const ang = e.a - st.rot;
+          let ex = bx + Math.cos(ang) * e.r * 1.5 * R;
+          let ey = by + Math.sin(ang) * e.r * 0.42 * R;
           let boost = 0;
           if (pAct) {
             const ddx = ex - pointer.x, ddy = ey - pointer.y;
@@ -198,8 +202,9 @@ export default function EmberField() {
           ex += e.dx; ey += e.dy;
           const flick = 0.55 + 0.45 * Math.sin(t * e.speed + e.phase) * Math.sin(t * e.speed * 0.37 + e.phase * 2);
           const b = Math.min(1.4, e.heat * flick + boost * 0.9 + k * 0.8);
-          const s = e.size * (4 + b * 5) * (w < 640 ? 0.9 : 1);
-          ctx.globalAlpha = Math.min(1, 0.18 + b * 0.7);
+          // Over the 3D model the embers stay small so the pile shows through.
+          const s = e.size * (4 + b * 5) * (w < 640 ? 0.9 : 1) * (flat ? 1 : 0.6);
+          ctx.globalAlpha = Math.min(1, 0.18 + b * 0.7) * (flat ? 1 : 0.8);
           ctx.drawImage(b > 0.85 ? hot : warm, ex - s, ey - s, s * 2, s * 2);
         }
         ctx.globalAlpha = 1;

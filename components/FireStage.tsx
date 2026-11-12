@@ -27,12 +27,21 @@ export default function FireStage({ hasModel }: { hasModel: boolean }) {
         scroll.rest = clamp((vh - r.top) / (vh * 0.8));
       }
     };
+    // At most one measurement per frame, however many scroll events arrive.
+    let frame = 0;
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(() => {
+        frame = 0;
+        measure();
+      });
+    };
     measure();
-    window.addEventListener("scroll", measure, { passive: true });
-    window.addEventListener("resize", measure);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
     return () => {
-      window.removeEventListener("scroll", measure);
-      window.removeEventListener("resize", measure);
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
     };
   }, []);
 

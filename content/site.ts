@@ -11,8 +11,8 @@ export const site = {
   url: "https://chocoff.github.io",
   role: { en: "Software Developer", es: "Desarrollador de Software" } as L,
   description: {
-    en: "Fernando Rojas (Choco), Paraguayan software developer. Game systems, graphics, and AI pipelines, built from scratch.",
-    es: "Fernando Rojas (Choco), desarrollador de software paraguayo. Sistemas de juego, gráficos y pipelines de IA, hechos desde cero.",
+    en: "Choco (Fernando Rojas), Paraguayan software developer working with clients end to end. Game systems, graphics and AI pipelines, built from scratch.",
+    es: "Choco (Fernando Rojas), desarrollador de software paraguayo que trabaja con clientes de punta a punta. Sistemas de juego, gráficos y pipelines de IA, hechos desde cero.",
   } as L,
 
   status: {
@@ -23,8 +23,8 @@ export const site = {
     } as L,
     /** Supporting line. Keep it to one sentence. */
     detail: {
-      en: "Building software and running clients' Meta Ads campaigns, with one last course left before I graduate in Computer Science and Information Engineering.",
-      es: "Desarrollo software y gestiono campañas de Meta Ads para clientes; me queda una última materia para recibirme en Ciencias de la Computación e Ingeniería Informática.",
+      en: "I design and build software, and work directly with clients to turn what they need into products that ship. Computer Science and Information Engineering student.",
+      es: "Diseño y desarrollo software, y trabajo directamente con clientes para convertir lo que necesitan en productos que funcionan. Estudiante de Ciencias de la Computación e Ingeniería Informática.",
     } as L,
   },
 

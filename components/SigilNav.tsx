@@ -20,7 +20,15 @@ export default function SigilNav({ items, label, homeLabel }: { items: readonly 
     const sections = items
       .map((i) => document.getElementById(i.id))
       .filter((el): el is HTMLElement => Boolean(el));
-    const root = document.documentElement;
+    // Only the hearth glow reads the warmth: set it there, and only when it changes,
+    // so scrolling never restyles the whole document.
+    const hearth = document.querySelector<HTMLElement>(".hearth");
+    let warmth = "";
+    const warm = (value: string) => {
+      if (value === warmth || !hearth) return;
+      warmth = value;
+      hearth.style.setProperty("--warmth", value);
+    };
 
     const io = new IntersectionObserver(
       (entries) => {
@@ -29,7 +37,7 @@ export default function SigilNav({ items, label, homeLabel }: { items: readonly 
           const id = e.target.id;
           setActive(id);
           const item = items.find((i) => i.id === id);
-          if (item) root.style.setProperty("--warmth", String(item.warmth));
+          if (item) warm(String(item.warmth));
         }
       },
       { rootMargin: "-45% 0px -50% 0px" },
@@ -37,15 +45,21 @@ export default function SigilNav({ items, label, homeLabel }: { items: readonly 
     sections.forEach((s) => io.observe(s));
 
     // Above the first section: the hero, full warmth.
-    const onScroll = () => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
       if (sections[0] && window.scrollY < sections[0].offsetTop - window.innerHeight * 0.5) {
         setActive("");
-        root.style.setProperty("--warmth", "1");
+        warm("1");
       }
     };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    update();
     return () => {
+      cancelAnimationFrame(frame);
       io.disconnect();
       window.removeEventListener("scroll", onScroll);
     };

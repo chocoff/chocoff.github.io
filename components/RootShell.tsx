@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { site } from "@/content/site";
+import { contact, site, skills } from "@/content/site";
 import type { Lang } from "@/content/i18n";
 import { fontVars } from "@/lib/fonts";
 
@@ -18,13 +18,19 @@ d.dataset.phase=(rm||s||h)?'lit':'dormant';}catch(e){d.dataset.phase='dormant';}
 setTimeout(function(){if(!d.dataset.ready){d.dataset.phase='lit';d.classList.remove('is-dark');}},4000);})();`;
 
 export function rootMetadata(lang: Lang): Metadata {
-  const title = `${site.name} (${site.alias}) · ${site.role[lang]}`;
+  const title = `${site.alias} (${site.name}) · ${site.role[lang]}`;
   const home = lang === "en" ? "/" : "/es/";
   return {
     metadataBase: new URL(site.url),
-    title: { default: title, template: `%s · ${site.name}` },
+    title: { default: title, template: `%s · ${site.alias}` },
     description: site.description[lang],
-    alternates: { canonical: home, languages: { en: "/", es: "/es/" } },
+    applicationName: site.alias,
+    authors: [{ name: site.name, url: site.url }],
+    creator: site.name,
+    keywords: ["Fernando Rojas", "Choco", "software developer", "Paraguay", "game development", "computer graphics", "AI", "portfolio"],
+    alternates: { canonical: home, languages: { en: "/", es: "/es/", "x-default": "/" } },
+    robots: { index: true, follow: true },
+    formatDetection: { telephone: false, email: false, address: false },
     icons: {
       icon: [
         { url: "/favicon.svg", type: "image/svg+xml" },
@@ -36,35 +42,59 @@ export function rootMetadata(lang: Lang): Metadata {
       type: "profile",
       url: home,
       locale: lang === "en" ? "en_US" : "es_PY",
-      title: `${site.name} (${site.alias})`,
+      alternateLocale: lang === "en" ? ["es_PY"] : ["en_US"],
+      title: `${site.alias} (${site.name})`,
       description: site.description[lang],
-      siteName: site.name,
-      images: [{ url: "/og.png", width: 1200, height: 630, alt: `${site.name}, ${site.role[lang]}` }],
+      siteName: site.alias,
+      firstName: "Fernando",
+      lastName: "Rojas",
+      username: "chocoff",
+      images: [{ url: "/og.png", width: 1200, height: 630, alt: `${site.alias} (${site.name}), ${site.role[lang]}` }],
     },
-    twitter: { card: "summary_large_image", title: `${site.name} (${site.alias})`, description: site.description[lang], images: ["/og.png"] },
+    twitter: { card: "summary_large_image", title: `${site.alias} (${site.name})`, description: site.description[lang], images: ["/og.png"] },
   };
 }
 
 export default function RootShell({ lang, children }: { lang: Lang; children: React.ReactNode }) {
-  const personLd = {
+  const home = new URL(lang === "en" ? "/" : "/es/", site.url).toString();
+  const structured = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: site.name,
-    alternateName: site.alias,
-    jobTitle: site.role[lang],
-    url: site.url,
-    worksFor: { "@type": "Organization", name: "Dualtti", url: "https://dualtti.com/" },
-    alumniOf: [
-      { "@type": "CollegeOrUniversity", name: "Universidad Politécnica Taiwán-Paraguay" },
-      { "@type": "CollegeOrUniversity", name: "National Taiwan University of Science and Technology" },
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": `${site.url}/#person`,
+        name: site.name,
+        alternateName: site.alias,
+        givenName: "Fernando",
+        familyName: "Rojas",
+        jobTitle: site.role[lang],
+        description: site.description[lang],
+        url: site.url,
+        image: new URL("/media/portrait.webp", site.url).toString(),
+        nationality: { "@type": "Country", name: "Paraguay" },
+        worksFor: { "@type": "Organization", name: "Dualtti", url: "https://dualtti.com/" },
+        alumniOf: [
+          { "@type": "CollegeOrUniversity", name: "Universidad Politécnica Taiwán-Paraguay", url: "https://www.uptp.edu.py/" },
+          { "@type": "CollegeOrUniversity", name: "National Taiwan University of Science and Technology", url: "https://www.ntust.edu.tw/" },
+        ],
+        knowsAbout: skills.flatMap((s) => s.items),
+        sameAs: [contact.linkedin, contact.github],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${site.url}/#website`,
+        url: home,
+        name: site.alias,
+        inLanguage: lang,
+        author: { "@id": `${site.url}/#person` },
+      },
     ],
-    sameAs: ["https://www.linkedin.com/in/fernando-rojaschoco", "https://github.com/chocoff"],
   };
   return (
     <html lang={lang} className={fontVars} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: prePaint }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structured) }} />
       </head>
       <body>{children}</body>
     </html>
