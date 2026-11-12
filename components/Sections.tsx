@@ -164,26 +164,24 @@ export function Rest({ lang }: { lang: Lang }) {
 export function Footer({ lang, hasModel, home = false }: { lang: Lang; hasModel?: boolean; home?: boolean }) {
   return (
     <footer className="footer">
-      <p>
-        © {new Date().getFullYear()} {site.alias} · {site.name}.
-        {hasModel && (
-          <>
-            {" "}
-            {ui.modelCredit[lang]}{" "}
-            <a href="https://sketchfab.com/3d-models/dark-souls-bonfire-b0d68c8f4cd0487da3d1fb8327ab1044" target="_blank" rel="noopener noreferrer">
-              “Dark Souls - Bonfire”
-            </a>{" "}
-            · UselessViking ·{" "}
-            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
-              CC BY 4.0
-            </a>
-            .
-          </>
-        )}
+      <p className="footer-mark">
+        © {new Date().getFullYear()} {site.alias} · {site.name}
       </p>
-      <a href={home ? "#top" : `${base(lang)}/`} className="text-link">
+      <a href={home ? "#top" : `${base(lang)}/`} className="text-link footer-back">
         {ui.backToFire[lang]}
       </a>
+      {hasModel && (
+        <p className="footer-credit">
+          {ui.modelCredit[lang]}{" "}
+          <a href="https://sketchfab.com/3d-models/dark-souls-bonfire-b0d68c8f4cd0487da3d1fb8327ab1044" target="_blank" rel="noopener noreferrer">
+            “Dark Souls - Bonfire”
+          </a>{" "}
+          · UselessViking ·{" "}
+          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
+            CC BY 4.0
+          </a>
+        </p>
+      )}
     </footer>
   );
 }

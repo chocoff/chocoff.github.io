@@ -14,6 +14,7 @@ export default function FireStage({ hasModel }: { hasModel: boolean }) {
   useEffect(() => {
     const about = document.getElementById("about");
     const rest = document.getElementById("contact");
+    const links = rest?.querySelector(".contact-rail");
     const measure = () => {
       const vh = window.innerHeight;
       if (about) {
@@ -25,6 +26,8 @@ export default function FireStage({ hasModel }: { hasModel: boolean }) {
       if (rest) {
         const r = rest.getBoundingClientRect();
         scroll.rest = clamp((vh - r.top) / (vh * 0.8));
+        scroll.restBottom = r.bottom / vh;
+        if (links) scroll.restContent = links.getBoundingClientRect().bottom / vh;
       }
     };
     // At most one measurement per frame, however many scroll events arrive.

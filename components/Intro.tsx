@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getPhase, hasKindledBefore, kindle, lightImmediately, subscribe, type Phase } from "@/lib/flame";
+import { getPhase, kindle, lightImmediately, subscribe, type Phase } from "@/lib/flame";
 import { ui, type Lang } from "@/content/i18n";
 
 /**
@@ -24,10 +24,6 @@ export default function Intro({ lang }: { lang: Lang }) {
     // Lock scroll while dormant; the page lives behind the darkness.
     document.documentElement.classList.add("is-dark");
 
-    // Returning visitors: a short re-light, no ritual.
-    let auto: number | undefined;
-    if (hasKindledBefore()) auto = window.setTimeout(() => kindle(1000), 650);
-
     // If nothing happens for a while, the prompt brightens.
     const hint = window.setTimeout(() => setHinted(true), 5000);
 
@@ -38,7 +34,6 @@ export default function Intro({ lang }: { lang: Lang }) {
 
     return () => {
       off();
-      window.clearTimeout(auto);
       window.clearTimeout(hint);
       window.removeEventListener("keydown", onKey);
     };

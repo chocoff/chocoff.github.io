@@ -31,7 +31,13 @@ export default function PathTrack({ lang }: { lang: Lang }) {
     const sec = section.current!;
     const tr = track.current!;
     let dist = 0;
+    let stops: HTMLElement[] = [];
     let marks: number[] = []; // each stop's marker, px from the track's left edge
+    let fades: string[] = [];
+    // Steps fade out as they slide past the side rail: fully shown while their
+    // left edge is right of FADE_FROM, gone once it is FADE_SPAN further left.
+    const FADE_FROM = 104;
+    const FADE_SPAN = 320;
     let best = -1;
     let frame = 0;
 
@@ -44,6 +50,16 @@ export default function PathTrack({ lang }: { lang: Lang }) {
       const x = -p * dist;
       tr.style.transform = `translate3d(${x}px,0,0)`;
       sec.style.setProperty("--p", p.toFixed(4));
+      const wide = window.innerWidth > 900;
+      for (let i = 0; i < stops.length; i++) {
+        const left = marks[i] - 22 + x;
+        const f = wide ? Math.max(0, Math.min(1, (left - FADE_FROM + FADE_SPAN) / FADE_SPAN)) : 1;
+        const v = f.toFixed(2);
+        if (v !== fades[i]) {
+          fades[i] = v;
+          stops[i].style.setProperty("--fade", v);
+        }
+      }
       if (r.top >= vh * 0.6) return;
       // A stop is reached when its marker crosses 62% of the viewport width.
       const line = window.innerWidth * 0.62 - x;
@@ -59,7 +75,9 @@ export default function PathTrack({ lang }: { lang: Lang }) {
     };
     const measure = () => {
       dist = Math.max(0, tr.scrollWidth - window.innerWidth);
-      marks = Array.from(tr.children as HTMLCollectionOf<HTMLElement>, (el) => el.offsetLeft + 22);
+      stops = Array.from(tr.children as HTMLCollectionOf<HTMLElement>);
+      marks = stops.map((el) => el.offsetLeft + 22);
+      fades = [];
       setTravel(dist);
       schedule();
     };
@@ -85,6 +103,7 @@ export default function PathTrack({ lang }: { lang: Lang }) {
       window.removeEventListener("resize", measure);
       tr.removeEventListener("focusin", onFocus);
       tr.style.transform = "";
+      stops.forEach((el) => el.style.removeProperty("--fade"));
     };
   }, [walk]);
 
@@ -116,7 +135,6 @@ export default function PathTrack({ lang }: { lang: Lang }) {
                 data-row={i % 2 ? "low" : "high"}
                 data-lit={lit || undefined}
                 data-current={s.end === null || undefined}
-                data-photo={s.photo ? "" : undefined}
               >
                 <span className="stop-mark" aria-hidden="true" />
                 <span className="stop-year" aria-hidden="true">
@@ -144,7 +162,7 @@ export default function PathTrack({ lang }: { lang: Lang }) {
                   </div>
                   {s.photo && (
                     <figure className="stop-photo">
-                      <Image src={s.photo.src} alt={s.photo.alt[lang]} width={400} height={500} sizes="(max-width: 640px) 100vw, 200px" loading="lazy" />
+                      <Image src={s.photo.src} alt={s.photo.alt[lang]} width={400} height={500} sizes="(max-width: 640px) 100vw, 210px" loading="lazy" />
                     </figure>
                   )}
                 </article>

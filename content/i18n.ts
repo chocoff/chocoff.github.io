@@ -20,7 +20,6 @@ export const ui = {
   navWorks: { en: "Works", es: "Proyectos" },
   navMore: { en: "More", es: "Más" },
   navContact: { en: "Contact", es: "Contacto" },
-  backToTop: { en: "Back to the top", es: "Volver arriba" },
 
   emailMe: { en: "Email me", es: "Escríbeme" },
   copyEmail: { en: "Copy", es: "Copiar" },

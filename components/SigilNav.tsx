@@ -13,7 +13,7 @@ const icons: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
   contact: SigilLantern,
 };
 
-export default function SigilNav({ items, label, homeLabel }: { items: readonly NavItem[]; label: string; homeLabel: string }) {
+export default function SigilNav({ items, label }: { items: readonly NavItem[]; label: string }) {
   const [active, setActive] = useState<string>("");
 
   useEffect(() => {
@@ -66,26 +66,27 @@ export default function SigilNav({ items, label, homeLabel }: { items: readonly 
   }, [items]);
 
   return (
-    <nav className="sigils" aria-label={label}>
-      <a className="sigils-home" href="#top" aria-label={homeLabel}>
-        Choco<span aria-hidden="true">.</span>
-      </a>
-      <ol>
-        {items.map((item) => {
-          const Icon = icons[item.id];
-          return (
-            <li key={item.id}>
-              <a href={`#${item.id}`} className="sigil" aria-current={active === item.id ? "location" : undefined} aria-describedby={`peek-${item.id}`}>
-                <Icon />
-                <span className="sigil-label">{item.label}</span>
-              </a>
-              <span className="sigil-peek" id={`peek-${item.id}`} role="tooltip">
-                {item.preview}
-              </span>
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
+    <>
+      {/* frosted glass behind the rail; a sibling, since the nav's own transform would trap it */}
+      <div className="sigils-glass" aria-hidden="true" />
+      <nav className="sigils" aria-label={label}>
+        <ol>
+          {items.map((item) => {
+            const Icon = icons[item.id];
+            return (
+              <li key={item.id}>
+                <a href={`#${item.id}`} className="sigil" aria-current={active === item.id ? "location" : undefined} aria-describedby={`peek-${item.id}`}>
+                  <Icon />
+                  <span className="sigil-label">{item.label}</span>
+                </a>
+                <span className="sigil-peek" id={`peek-${item.id}`} role="tooltip">
+                  {item.preview}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    </>
   );
 }

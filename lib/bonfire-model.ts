@@ -11,7 +11,9 @@
  * The result sits on y = 0, centred, about 2.4 units tall.
  */
 import * as THREE from "three/webgpu";
-import { float, mix, mx_fractal_noise_float, mx_noise_float, positionLocal, sin, smoothstep, time, uniform, vec2, vec3 } from "three/tsl";
+import {
+  acesFilmicToneMapping, float, mix, mx_fractal_noise_float, mx_noise_float, output, positionLocal, sin, smoothstep, time, uniform, vec2, vec3, vec4,
+} from "three/tsl";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 
 export const MODEL_URL = "/models/bonfire.glb";
@@ -241,10 +243,11 @@ function materials(s: Space): Record<Part, THREE.Material> {
   bone.emissiveNode = EMBER.mul(cracks.mul(smoothstep(0.55, 0.95, heat)).mul(2.4)).mul(glow);
 
   // Iron: dark, worn, with rust in the hollows; it glows where it stands in the fire.
+  // Half metallic: with no reflection map, the firelight alone gives it its sheen.
   const ironN = mx_fractal_noise_float(q.mul(4), 3, 2, 0.5, 1).mul(0.5).add(0.5);
-  const iron = new THREE.MeshStandardNodeMaterial({ metalness: 0.88, side: THREE.DoubleSide });
+  const iron = new THREE.MeshStandardNodeMaterial({ metalness: 0.55, side: THREE.DoubleSide });
   iron.colorNode = mix(vec3(0.2, 0.2, 0.21), vec3(0.12, 0.055, 0.03), smoothstep(0.62, 0.85, ironN));
-  iron.roughnessNode = ironN.mul(0.3).add(0.3);
+  iron.roughnessNode = ironN.mul(0.25).add(0.38);
   const steelHeat = smoothstep(0.45, 0.92, heat);
   iron.emissiveNode = mix(EMBER, HOT, steelHeat).mul(steelHeat.pow(2).mul(4.2)).mul(glow);
 
@@ -255,7 +258,13 @@ function materials(s: Space): Record<Part, THREE.Material> {
   const stone = new THREE.MeshStandardNodeMaterial({ roughness: 0.9, metalness: 0, flatShading: true });
   stone.colorNode = mix(vec3(0.03, 0.026, 0.023), vec3(0.06, 0.054, 0.048), ashN);
 
-  return { ash, bone, iron, wood, stone };
+  // Filmic response on the model only. Tone mapping the whole frame would also
+  // crush the canvas's soot background to black, so it would no longer match the page.
+  const parts = { ash, bone, iron, wood, stone };
+  const lit = vec4(output);
+  const filmic = vec4(acesFilmicToneMapping(lit.rgb, float(1.15)) as unknown as ReturnType<typeof vec3>, lit.a);
+  for (const m of Object.values(parts)) m.outputNode = filmic;
+  return parts;
 }
 
 /** Centre on x/z, rest on y = 0, scale to the target height. */

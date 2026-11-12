@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { getPhase, gpu, hydratePhase, kindleProgress, pointer, stage, subscribe } from "@/lib/flame";
+import { baseRadius, getPhase, gpu, hydratePhase, kindleProgress, pointer, stage, subscribe } from "@/lib/flame";
 
 /**
  * The 2D layer. Always cheap, always first on screen:
@@ -145,7 +145,7 @@ export default function EmberField() {
       const st = stage(now);
       const bx = st.x * w;
       const by = st.y * h;
-      const R = Math.min(w, h) * (w < 640 ? 0.2 : 0.13) * st.scale;
+      const R = baseRadius(w, h) * st.scale;
       // The 3D model replaces the drawn logs once the GPU scene is up.
       const flat = reduce || gpu.failed;
       const t = now / 1000;

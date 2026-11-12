@@ -35,7 +35,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
         {ui.skipContent[lang]}
       </a>
       <LangToggle lang={lang} path="/" />
-      <SigilNav items={nav} label={ui.navLabel[lang]} homeLabel={ui.backToTop[lang]} />
+      <SigilNav items={nav} label={ui.navLabel[lang]} />
       <div className="hearth" aria-hidden="true" />
       <main className="page">
         <Hero lang={lang} />

@@ -7,9 +7,9 @@
 import * as THREE from "three/webgpu";
 import {
   Fn, If, uniform, float, vec3, vec4, instancedArray, instanceIndex,
-  hash, sin, mix, smoothstep, uv, select, varying, attribute, positionLocal,
+  hash, sin, mix, smoothstep, uv, select, varying, attribute,
 } from "three/tsl";
-import { getPhase, gpu, kindleProgress, pointer, stage, subscribe } from "./flame";
+import { baseRadius, getPhase, gpu, kindleProgress, pointer, stage, subscribe } from "./flame";
 import { fireGlow, loadBonfire } from "./bonfire-model";
 
 const FLAMES = 2600;
@@ -22,9 +22,6 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
   // glow leaves colour > alpha, which WebGPU compositing treats as undefined.
   const renderer = new THREE.WebGPURenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
   renderer.setClearColor(new THREE.Color(SOOT), 1);
-  // Filmic response for the lit model; the flame sprites opt out and keep their own colour.
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
   await renderer.init();
 
   let w = window.innerWidth;
@@ -142,7 +139,6 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
     depthTest: false,
     blending: THREE.AdditiveBlending,
   });
-  material.toneMapped = false;
 
   // Render-side reads go through instanced attributes (works on WebGPU and WebGL2).
   const aPos = pos.toAttribute();
@@ -210,8 +206,6 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
   const rim = new THREE.DirectionalLight(0x9fb2cc, 0);
   rim.position.set(-0.6, 0.9, -0.5);
   scene.add(fill, rim);
-  scene.environment = await fireEnvironment(renderer);
-  scene.environmentIntensity = 0.28;
 
   // ---- sizing ---------------------------------------------------------------
   let baseR = 1;
@@ -226,7 +220,7 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
     camera.near = Math.max(1, dist - 3000);
     camera.far = dist + 3000;
     camera.updateProjectionMatrix();
-    baseR = Math.min(w, h) * (w < 640 ? 0.2 : 0.13);
+    baseR = baseRadius(w, h);
   };
   resize();
   window.addEventListener("resize", resize);
@@ -326,30 +320,6 @@ export async function startFire(canvas: HTMLCanvasElement, opts: { hasModel: boo
     offPhase();
     document.removeEventListener("visibilitychange", check);
     gpu.ready = false;
-    scene.environment?.dispose();
     renderer.dispose();
   };
-}
-
-/**
- * A tiny, blurred surrounding for reflections: warm firelight from below,
- * cold dark above. It is what lets the iron read as metal.
- */
-async function fireEnvironment(renderer: THREE.WebGPURenderer): Promise<THREE.Texture | null> {
-  try {
-    const env = new THREE.Scene();
-    const mat = new THREE.MeshBasicNodeMaterial({ side: THREE.BackSide });
-    const y = positionLocal.normalize().y;
-    mat.colorNode = mix(vec3(0.8, 0.28, 0.07), vec3(0.03, 0.035, 0.045), smoothstep(-0.7, 0.15, y));
-    const sphere = new THREE.Mesh(new THREE.SphereGeometry(10, 24, 12), mat);
-    env.add(sphere);
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    const target = pmrem.fromScene(env, 0.04);
-    pmrem.dispose();
-    sphere.geometry.dispose();
-    mat.dispose();
-    return target.texture;
-  } catch {
-    return null;
-  }
 }

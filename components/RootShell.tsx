@@ -4,17 +4,18 @@ import type { Lang } from "@/content/i18n";
 import { fontVars } from "@/lib/fonts";
 
 /**
- * Runs before first paint. Decides whether the visitor meets the dark
- * (first visit), gets a quick re-light (returning), or lands lit (reduced
- * motion, already kindled this session, or a deep link to a section).
+ * Runs before first paint. Every visit starts in the dark and waits for the
+ * visitor to kindle the fire, except with reduced motion or a deep link to a
+ * section, which land lit. A refresh starts at the top, where the fire is.
  * Without JS nothing here runs, the intro never shows, and the page is lit.
  * If the app's JS fails to start within 4s, the failsafe lights the page so
  * nobody is left in the dark with a dead button.
  */
 const prePaint = `(function(){var d=document.documentElement;d.classList.add('js');try{
-var k='choco:kindled';var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-var s=sessionStorage.getItem(k)==='1';var h=location.hash&&location.hash.length>1;
-d.dataset.phase=(rm||s||h)?'lit':'dormant';}catch(e){d.dataset.phase='dormant';}
+var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var h=location.hash&&location.hash.length>1;
+d.dataset.phase=(rm||h)?'lit':'dormant';
+if(d.dataset.phase==='dormant'&&'scrollRestoration' in history){history.scrollRestoration='manual';scrollTo(0,0);}}catch(e){d.dataset.phase='dormant';}
 setTimeout(function(){if(!d.dataset.ready){d.dataset.phase='lit';d.classList.remove('is-dark');}},4000);})();`;
 
 export function rootMetadata(lang: Lang): Metadata {
